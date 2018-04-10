@@ -1,0 +1,1 @@
+Geschichte, MLP (vom Perzeptron), Computational graphs?, Anwendungen (Beispiele), Trainieren, Universal Approximator, Ausblick, Probleme (vanishing gradient, ...)
