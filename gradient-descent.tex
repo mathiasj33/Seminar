@@ -1,0 +1,22 @@
+\section{Gradient Descent}
+\subsection{Introduction}
+Gradient Descent is an algorithm used to iteratively minimize functions $f: \mathbb{R}^n \to \mathbb{R}$ of multiple values.
+
+\subsection{Directional derivatives}
+Since $f$ is a function of multiple values, it does not suffice to.
+
+From the definition of the directional derivative it follows that it evaluates to $\nabla f \cdot u$. A rigorous proof can be found in [1], but as an intuition, the change of $f(x)$ in direction $u$ can be thought of as $u_1$ times the change in $x_1$ plus $u_2$ times the change in $x_2$ plus \ldots which results in $\sum_{i=0}^{n}\frac{\partial f}{\partial x_i}u_i = \nabla f \cdot u$.
+
+Following Goodfellow et al. [2], we can find the direction in which $f$ decreases fastest using the directional derivative:
+\begin{equation*}
+\begin{gathered}
+\min_u \nabla f \cdot u \\
+= \min_u \lVert u \rVert_2 \lVert \nabla f \rVert_2 \cos \theta
+\end{gathered}
+\end{equation*}
+\ldots
+\\\\
+Our goal is to choose a $\Delta v$ that minimizes $\Delta C \approx \nabla C \cdot \Delta v$. The Cauchy--Schwarz inequality tells us that $|\nabla C \cdot \Delta v|$ is constrained by $\lVert v \rVert \lVert \nabla C \rVert$ where $|\nabla C \cdot \Delta v| = \lVert v \rVert \lVert \nabla C \rVert$ if and only if $\Delta v = \eta \nabla C$.
+Since $\nabla C \cdot \eta \nabla C = \eta \lVert \nabla C \rVert^2 > 0$ we can choose $\Delta v = -\eta \nabla C$ to minimize $\Delta C$.
+
+\todo[inline]{Beweis mit Cauchy Schwarz oder directional derivatives?}
