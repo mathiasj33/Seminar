@@ -1,0 +1,8 @@
+% !TeX root = dm-template.tex
+
+\begin{tikzpicture}[scale=.8]
+	\begin{axis}[axis lines = left,xlabel = $x$, ylabel = {$\sigma(x)$},]
+		\addplot [domain=-8:8, samples=200, color=red, style=semithick]
+		{1/(1+exp(-x))};
+	\end{axis}
+\end{tikzpicture}

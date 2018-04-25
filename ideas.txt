@@ -1,1 +1,5 @@
-Geschichte, MLP (vom Perzeptron), Error functions, Computational graphs?, Anwendungen (Beispiele), Trainieren, Universal Approximator, Ausblick, Probleme (vanishing gradient, ...)
+Probleme (vanishing gradient, Adversarial examples, ...)
+
+Vorteile/Nachteile
+
+Notation: Wie in Deep Learning.

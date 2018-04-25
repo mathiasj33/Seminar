@@ -19,4 +19,22 @@ Following Goodfellow et al. [2], we can find the direction in which $f$ decrease
 Our goal is to choose a $\Delta v$ that minimizes $\Delta C \approx \nabla C \cdot \Delta v$. The Cauchy--Schwarz inequality tells us that $|\nabla C \cdot \Delta v|$ is constrained by $\lVert v \rVert \lVert \nabla C \rVert$ where $|\nabla C \cdot \Delta v| = \lVert v \rVert \lVert \nabla C \rVert$ if and only if $\Delta v = \eta \nabla C$.
 Since $\nabla C \cdot \eta \nabla C = \eta \lVert \nabla C \rVert^2 > 0$ we can choose $\Delta v = -\eta \nabla C$ to minimize $\Delta C$.
 
-\todo[inline]{Beweis mit Cauchy Schwarz oder directional derivatives?}
+Gradient Descent can further be extended to include the momentum of the function \cite{DBLP:journals/corr/Ruder16}.
+
+Following \cite{Goodfellow-et-al-2016}, one can represent neural networks as a directed cyclical graph.
+
+Hornik\cite{DBLP:journals/nn/Hornik91} has shown that.
+
+
+\begin{figure}
+	\begin{center}
+		\input{sigmoid}
+	\end{center}
+	\caption{The sigmoid function $\sigma(x)$}
+\end{figure}
+
+\begin{figure}
+	\begin{center}
+		\input{perceptron}
+	\end{center}
+\end{figure}
