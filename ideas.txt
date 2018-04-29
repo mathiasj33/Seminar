@@ -1,5 +1,0 @@
-Probleme (vanishing gradient, Adversarial examples, ...)
-
-Vorteile/Nachteile
-
-Notation: Wie in Deep Learning.
