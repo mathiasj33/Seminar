@@ -1,35 +1,44 @@
 \section{The Perceptron}
 \label{sec:perceptron}
-The perceptron\cite{McCulloch1943115} is a simple mathematical model of the biological neuron. It accepts $n$ input values $x_1, \ldots, x_n$ and computes a corresponding output by computing the weighted sum
+When researchers developed the first machine learning models, they often used ideas based closely on our understanding of the brain. One such model, inspired by the biological neuron, is the perceptron, which was first conceived by \cite{McCulloch1943115}.
+
+Like its biological counterpart, the perceptron receives information and produces an output. More specifically, it accepts $n$ input values $x_1, \ldots, x_n$ and calculates a corresponding output value $\hat{y} \in \{-1, 1\}$ by computing
 \begin{equation}\label{eq:perceptron1}
-	\sum_{i=1}^{n} w_ix_i,
+	\hat{y} = \text{sign}\left (\sum_{i=1}^{n} w_ix_i\right ),
 \end{equation}
-where the weights $w_i$ are the parameters of the model.
-By representing the input values as a vector $\bm{x}$ and the weights as a vector $\bm{w}$, we can rewrite \eqref{eq:perceptron1} as $\bm{w}^\top\bm{x}$. Fig. \ref{fig:perceptron} illustrates the perceptron.
+where the weights $w_i$ are the parameters of the model, and $\text{sign}(x)$ is defined as
+\begin{equation}
+\text{sign}(x) = \begin{cases} 1 & \text{if }x \geq 0
+							\\-1 & \text{if }x < 0.
+\end{cases}
+\end{equation}
+By representing the input values and weights as vectors $\bm{x}$ and $\bm{w}$, we can rewrite \eqref{eq:perceptron1} as
+\begin{equation}
+\hat{y} = \text{sign}(\bm{w}^\top\bm{x}).
+\end{equation}
+For a visual representation of this model, see Fig. \ref{fig:perceptron}. 
 
 \begin{figure}
 	\begin{center}
 		\input{perceptron_img}
 	\end{center}
-	\caption{An illustration of the perceptron model. In this example, the perceptron accepts three inputs $x_1, x_2, x_3$ and computes the weighted sum $w_1x_1 + w_2x_2 + w_3x_3.$}
+	\caption{An illustration of the perceptron model. In this example, the perceptron accepts three inputs $x_1, x_2, x_3$, has the parameters $w_1, w_2, w_3$, and computes $\hat{y} = \text{sign}(w_1x_1 + w_2x_2 + w_3x_3).$}
 	\label{fig:perceptron}
 \end{figure}
 
-One usecase of the perceptron are binary classification problems. Given a set of $m$ training examples $\mathbb{X} = \{\bm{x}^{(1)}, \ldots, \bm{x}^{(m)}\}$ and their corresponding binary labels $\mathbb{Y}$, we want to predict whether a given vector $\bm{x}$ is more likely to have the label $y = 1$ or the label $y = -1$.
+Perceptron models can be used to solve binary classification problems. In this scenario, we are given a set of $m$ training examples $\mathbb{X} = \{\bm{x}^{(1)}, \ldots, \bm{x}^{(m)}\}$ and their corresponding binary labels $\mathbb{Y}$, and wish to predict the most probable label for an unseen vector $\bm{x} \notin \mathbb{X}$.
 
-For example, our vectors $\bm{x}^{(i)}$ might describe features of an email using a \emph{bag-of-words} representation. That is, we specify a fixed vocabulary of words and the $j$th entry in the vector specifies how often the $j$th word of the vocabulary occurs in that particular document. The corresponding label $y^{(i)} = 1$ then might signify that the email was a legitimate email, whereas a value of $y^{(i)} = -1$ might label the email as spam.
+For example, the vectors $\bm{x}^{(i)}$ might describe features of an email using a \emph{bag-of-words} representation. That is, we define a fixed vocabulary, and the $j$th entry in the vector $\bm{x}^{(i)}$ specifies how often the $j$th word of the vocabulary occurs in the particular email represented by $\bm{x}^{(i)}$. The corresponding label $y^{(i)} = 1$ then might signify that the email is a legitimate email, whereas a value of $y^{(i)} = -1$ might label the email as spam.
 
-Prediction with the perceptron model is simple: We predict a value $\hat{y}$ depending on the sign of the weighted sum:
+In the beginning, the weights are randomly initialized and the model thus makes arbitrary predictions. During the process of \emph{training} the perceptron, we iteratively adjust the weights in order to improve the prediction accuracy on the training set.
+
+One common method of training is the perceptron learning algorithm proposed by \cite{Rosenblatt1958386}. Essentially, the algorithm iterates through the training data $\mathbb{X}$ and makes small adjustments to the weights if a particular training example $x^{(i)}$ is misclassified. For example, if the perceptron predicts $\hat{y} = 1$ and the actual label is $y^{(i)} = -1$, the weights are corrected in the negative direction. Since the perceptron learning algorithm is not directly applicable to neural networks, we will not discuss it further; a more in depth explanation can be found in \cite[Ch.\,8,\,pp.\,265-267]{DBLP:books/lib/Murphy12}.
+
+A major shortcoming of the perceptron is that it can only learn to classify linearly separable data \cite{DBLP:books/daglib/0066902}. For example, the \textsc{xor} function, where 
 \begin{equation}
-\hat{y} = \begin{cases} 1 & \text{if }\bm{w}^{\top}\bm{x} \geq 0,
-					  \\-1 & \text{if }\bm{w}^{\top}\bm{x} < 0.
-		  \end{cases}
+\text{\textsc{xor}}(x) = 
+\begin{cases} 0 & \text{if }x = [0,0] \lor x = [1,1] 
+			\\1 & \text{if }x = [1,0] \lor x = [0,1],
+\end{cases}
 \end{equation}
-
-The weights are randomly initialized and the model thus makes arbitrary predictions in the beginning. In the process of \emph{training} the perceptron, we iteratively adjust the weights so that the predictions on the ovserved training data $\mathbb{X}$ improve.
-
-One way to train the model is the perceptron learning algorithm proposed by \cite{Rosenblatt1958386}. The intuition behind the algorithm is that we step through the training data and only update $\bm{w}$ if the label that the model predicts is different from the actual observed label. However, if the model predicts a positive label and the actual label is negative, we adjust all weights corresponding to the training example a little in the negative direction, and we adjust the weights in the positive direction in the opposite case. Details can be found in ??.
-
-As we have seen, the perceptron is a rather simple model and it is thus no surprise that its performance is rather poor. In particular, it can be shown that the perceptron can only learn to classify linearly separable data [??]. For example, no combination of weights can successfully solve the \textsc{xor} problem \ldots.
-
-More sophisticated models needed which eventually led to the development of the neural network.
+cannot be learned with the perceptron. The discovery of these limitations has greatly reduced interest in the field of biological learning, until more sophisticated models, such as neural networks, were developed \cite[Ch.\,1,\,pp.\,12-18]{DBLP:books/daglib/0040158}.
