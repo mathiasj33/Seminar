@@ -1,12 +1,16 @@
 \begin{tikzpicture}
 	\tikzstyle{neuron} = [circle,draw=black!80,semithick,minimum size=20pt]
+	\tikzstyle{layer} = [text width=1cm, align=center]
 	% input layer
+	\node[layer] at (0, 0) {Input layer};
 	\foreach \i in {1,...,4}
 		\node[neuron] (input\i) at (0, -\i*1.2) {$x_\i$};
 	% hidden layer
+	\node[layer] at (2, 0) {Hidden layer};
 	\foreach \i in {1,...,3}
 		\node[neuron] (hidden\i) at (2, -\i*1.2 -.6) {};
 	% output layer
+	\node[layer] at (4, 0) {Output layer};
 	\foreach \i in {1,...,2}
 		\node[neuron] (output\i) at (4, -\i*1.2 -1.2) {};
 	% connections input->hidden
