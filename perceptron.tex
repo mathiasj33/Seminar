@@ -8,8 +8,8 @@ Like its biological counterpart, the perceptron receives information and produce
 \end{equation}
 where the weights $w_i$ are the parameters of the model, and $\sign(x)$ is defined as
 \begin{equation}
-\sign(x) = \begin{cases} 1 & \text{if }x \geq 0
-							\\-1 & \text{if }x < 0.
+\sign(x) = \begin{cases} 1 & \text{if }x > 0
+							\\-1 & \text{if }x \leq 0.
 \end{cases}
 \end{equation}
 By representing the input values and weights as vectors $\bm{x}$ and $\bm{w}$, we can rewrite Eq. \eqref{eq:perceptron1} as
@@ -17,7 +17,6 @@ By representing the input values and weights as vectors $\bm{x}$ and $\bm{w}$, w
 \hat{y} = \sign(\bm{w}^\top\bm{x}).
 \end{equation}
 For a visual representation of this model, see Fig. \ref{fig:perceptron}. 
-
 \begin{figure}
 	\begin{center}
 		\input{perceptron_fig}
