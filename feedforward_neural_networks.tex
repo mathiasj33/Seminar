@@ -1,9 +1,9 @@
 \section{Feedforward Neural Networks}
 \label{sec:feedforward_neural_networks}
-A natural extension of the perceptron model is to combine multiple perceptrons in a network architecture. It is intuitively clear that, much like in an organic brain, a complex arrangement of many simple computing units can learn much more complicated functions than those simple units alone. In this section, we will examine how such a network architecture based on perceptrons can be constructed. The ideas that we develop are mostly based on Ref. \cite[Ch.\,6]{DBLP:books/daglib/0040158}.
+A natural extension of the perceptron model is to combine multiple perceptrons in a network architecture called a neural network. It is intuitively clear that, much like in an organic brain, a complex arrangement of many simple computing units can learn much more complicated functions than those simple units alone. In this section, we will examine how such a network architecture based on perceptrons can be constructed. The ideas that we develop are mostly based on Ref. \cite[Ch.\,6]{DBLP:books/daglib/0040158}.
 
 \subsection{Extensions to the Perceptron}
-Before explaining the composition of perceptrons to neural networks, we will first explore two extensions to the perceptron model that are common in neural networks.
+Before explaining the composition of perceptrons to neural networks, we will first explore two common extensions to the perceptron model.
 
 First, we introduce an additional term called \emph{bias} to the output calculation. The new output $\hat{y}$ becomes
 \begin{equation}
@@ -13,8 +13,7 @@ where the scalar $b$ is the bias. This additional learnable parameter shifts the
 
 Second, we generalize the perceptron by replacing the $\sign$ function with an arbitrary function $f$ called \emph{activation function}. In contrast to $\sign(x)$, most activation functions used in neural networks are continuous, since this enables us to use a variety of \emph{gradient-based} learning algorithms for training as we will see in Section \ref{sec:training}. Concrete examples of activation functions will be discussed later in this section.
 
-Since we will sometimes need the weighted input without the activation function, we also introduce the intermediate quantity
-
+We also introduce the quantity $z$, the \emph{weighted input}, which simply is defined as
 \begin{equation}
 z = \bm{w}^\top\bm{x} + b.
 \end{equation}
@@ -70,7 +69,7 @@ In the remainder of this section, we will discuss the individual layers and corr
 \subsubsection{Output layer}
 The design of the output layer depends mostly on the task that we wish to perform with the neural network. If we want to predict a continuous output, a problem known as \emph{regression}, we use a linear output layer where the activation function simply is the identity function. The number of neurons in the output layer is equal to the dimensionality of the output space.
 
-In \emph{classification}, we wish to predict which class an input vector $\bm{x}$ belongs to. For example, as with the perceptron, we might want to distinguish normal emails from spam emails. In this case of \emph{binary} classification, it is common to use the activation function
+In \emph{classification}, we wish to predict the class of an input vector $\bm{x}$, given a set of classes. For example, as with the perceptron, we might want to distinguish normal emails from spam emails. In this case of \emph{binary} classification, it is common to use the activation function
 \begin{equation}
 \sigma(x) = \frac1{1+\exp(-x)},
 \end{equation}
@@ -82,7 +81,7 @@ called the logistic sigmoid, in combination with a single output unit.
 	\caption{The logistic sigmoid function.}
 	\label{fig:sigmoid}
 \end{figure}
-As shown in Fig. \ref{fig:sigmoid}, $\sigma(x)$ squashes its input to a value between 0 and 1, which can be interpreted as a Bernoulli distribution. Thus, it is an excellent choice for binary classification problems: the output of the neural network is the probability that it assigns to one specified class.
+As shown in Fig. \ref{fig:sigmoid}, $\sigma(x)$ squashes its input to a value between 0 and 1, which can be interpreted as a Bernoulli distribution. Thus, it is an excellent choice for binary classification problems: the output $\hat{y}$ of the neural network is the probability that $\bm{x}$ belongs to class 1, while $(1-\hat{y})$ is the probability that $\bm{x}$ belongs to class 0.
 
 In \emph{multiclass} classification problems, where we wish to predict a probability distribution over $k$ different classes, we construct an output layer with $k$ units. A generalization of the logistic sigmoid, called the softmax function
 \begin{equation}\label{eq:softmax}
