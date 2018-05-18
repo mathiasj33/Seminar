@@ -84,7 +84,7 @@ called the logistic sigmoid, in combination with a single output unit.
 \end{figure}
 As shown in Fig. \ref{fig:sigmoid}, $\sigma(x)$ squashes its input to a value between 0 and 1, which can be interpreted as a Bernoulli distribution. Thus, it is an excellent choice for binary classification problems: the output of the neural network is the probability that it assigns to one specified class.
 
-In \emph{multiclass} classification problems, where we wish to predict a probability distribution over $k$ different classes, we construct an output layer with $k$ units. A generalization of the logistic sigmoid, called the softmax function
+In \emph{multiclass} classification problems, where we wish to predict a probability distribution over $k$ different classes, we construct an output layer with $k$ units. A generalization of the logistic sigmoid, called the $\softmax$ function
 \begin{equation}\label{eq:softmax}
 \softmax(x) = \frac{\exp(x)}{\sum_{i=1}^{k}\exp(z_i)},
 \end{equation}
