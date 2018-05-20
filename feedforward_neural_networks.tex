@@ -68,6 +68,7 @@ In contrast to the output layer, the task that we want so solve does not give us
 We can think of the hidden layers as a means to learn a different representation of the input. The neural network transforms the input by propagating it through its hidden layers until it obtains a representation where it can perform its assigned task much easier. For example, in object recognition, one can show that neural networks learn to detect different features such as edges or individual object parts in different hidden layers \cite{DBLP:conf/eccv/ZeilerF14}. It is thus not surprising that deeper neural networks often perform better than shallow ones. On the other hand, deep neural networks are often difficult and computationally expensive to train.
 
 Another important consideration is the activation function used in hidden layers. Common activation functions include the logistic sigmoid, which we have already presented, the $\tanh$ function, which is only a slight variation of the logistic sigmoid function, and the rectified linear function $g(x) = \max\{0,x\}$, a plot of which can be found in Fig. \ref{fig:relu}.
+%TODO: keep this?
 
 \begin{figure}
 	\begin{center}

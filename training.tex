@@ -1,3 +1,48 @@
 \section{Training Feedforward Neural Networks}
 \label{sec:training}
-Given: Set of training data, labels, wie beim Perzeptron...
+The training process of neural networks utilizes the same ideas that we saw in the perceptron model. In particular, we are again given a set of $m$ training examples $\mathbb{X}$ with corresponding labels $\mathbb{Y}$, and wish to iteratively adjust the parameters $\bm{\theta}$ of the neural network to learn a mapping from $\mathbb{X}$ to $\mathbb{Y}$.
+
+For example, in a multiclass classification setting where we want to predict which digit is shown on an input image, the training examples $\bm{x}^{(i)}$ might be a flattened vector of the raw pixel values and the labels $\bm{y}^{(i)}$ might encode the corresponding class in a \emph{one-hot} fashion. This means that the number of dimensions of $\bm{y}^{(i)}$ matches the number of classes $k$, and if the \nth{i} entry of $\bm{y}^{(i)}$ equals 1, the vector represents the \nth{i} class. All other entries are equal to 0.
+%TODO: keep this??
+
+Suppose we are given such a set of training data and a neural network $f(\bm{\theta})$ with parameters $\bm{\theta}$, such that the output $\hat{\bm{y}} = f(\bm{x}; \bm{\theta})$ for an input vector $\bm{x}$. In this section, we explore how we can choose $\bm{\theta}$ in order to learn the function described by the training data.
+%TODO: cite Goodfellow here?
+
+\subsection{Cost functions}
+Since we start with a random set of parameters and wish to improve them, we need some kind of measure of how good the network performs. For this, we introduce the \emph{cost function} $J(\bm{\theta})$, sometimes also referred to as \emph{loss} or \emph{error} function. $J(\bm{\theta})$ is non-negative and the closer it is to 0, the better our network performs. We can thus reframe the training problem as \emph{minimizing the cost function}.
+
+The cost functions that we will consider can all be represented as sums over the costs of the individual training examples. Thus, we can write $J(\bm{\theta})$ as
+\begin{equation}
+J(\bm{\theta}) = \frac1{m}\sum_{i=1}^{m}L(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}),
+\end{equation}
+where $L$ is the loss for an individual training example \cite[Ch.\,5,\,pp.\,147-148]{DBLP:books/daglib/0040158}. We scale $J$ by $1/m$ to make the cost independent of the number of training examples $m$.
+
+We choose the particular per-example cost function $L$ based on the task that we wish to perform.
+
+In regression, a good choice is the \emph{mean squared error}
+\begin{equation}
+L(\bm{x}, y, \bm{\theta}) = \frac1{2}||\hat{y}-y||^2,
+\end{equation}
+which simply corresponds to the distance of the desired output from the actual output. It can easily be seen that it satisfies the properties of a cost function.
+
+The mean squared error is also a valid cost function in classification problems. However, it has some undesirable properties that can make training very difficult in this setting \cite[Ch.\,6,\,p.\,178]{DBLP:books/daglib/0040158}. Thus, we choose a different cost function, called the \emph{cross-entropy}, which is defined as
+\begin{equation}
+L(\bm{x}, y, \bm{\theta}) = -y \ln \hat{y} - (1-y)\ln(1-\hat{y})
+\end{equation}
+for binary classification tasks, where we specify the labels $y$ to be either 0 or 1. We can see that, if $y=1$, the loss simply becomes $-\ln\hat{y}$, which is large if $\hat{y}$ is close to 0, and small if $\hat{y}$ is close to 1. A similar analysis can be conducted for the case $y=0$ and we can see that this cost function also satisfies to property that it is close to 0 if our prediction is almost correct.
+
+In case of multiclass classification, the cross-entropy becomes
+\begin{equation}
+L(\bm{x}, \bm{y}, \bm{\theta}) = -\ln \hat{y}_i
+\end{equation}
+if $\bm{y}$ represents the \nth{i} class (i.e. the \nth{i} position in the vector $\bm{y}$ is 1). Similar arguments as in the case of binary classification apply as to why this is a valid cost function.
+
+While these functions might not look very similar, they can all be derived with the same principle, called \emph{maximum likelihood estimation} (MLE) \cite[Ch.\,5,\,pp.\,128-131]{DBLP:books/daglib/0040158}. This estimation comes from a probabilistic perspective and interprets the training data as samples drawn from an unknown probability distribution $P(\bm{Y}\given\bm{X})$. From this perspective, the goal of training is to choose a set of parameters $\bm{\theta}$ such that the probability distribution $P_{\text{model}}(\bm{Y}\given\bm{X}; \bm{\theta})$ described by the model matches the true distribution as closely as possible. The MLE states that we should choose the parameters that maximize $P_{\text{model}}$. The optimal set of parameters $\hat{\bm{\theta}}$ is thus given by
+\begin{equation}
+\hat{\bm{\theta}} = \argmax_{\bm{\theta}} P_{\text{model}}(\bm{Y}\given\bm{X}; \bm{\theta}).
+\end{equation}
+
+We obtain the mean squared error from the MLE if we regard the true probability distribution of the data as a Gaussian distribution. In the case of binary and multiclass classification, we see the true probability distribution as a Bernoulli or Multinoulli distribution, respectively \cite[ Ch.\,6,\,pp.\,175-185]{DBLP:books/daglib/0040158}.
+%TODO: keep all this? or only mention MLE and move on?
+
+\subsection{Stochastic Gradient Descent}
