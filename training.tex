@@ -84,7 +84,22 @@ which is exactly the left-hand side of Eq. \eqref{eq:cauchy-schwarz}. Thus, in o
 \end{equation}
 \end{comment}
 
-\subsection{The Back-propagation Algorithm}
-Backprop.
-
 Complete training algorithm.
+
+The problem with using gradient descent to train neural networks is that computing the gradient is linear in the number of training examples $m$. To see this, note that
+\begin{equation}
+\nabla J(\bm{\theta}) = \frac1{m}\sum_{i=1}^{m}\nabla L(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}).
+\end{equation}
+The key insight of \emph{stochastic} gradient descent is that the gradient can be approximated by averaging only over a subset of training examples $\mathbb{B} \subseteq \mathbb{X}$ called a \emph{batch}. Thus, the gradient computation becomes
+\begin{equation}
+\nabla J(\bm{\theta}) = \frac1{|\mathbb{B}|}\sum_{x\in\mathbb{B}}\nabla L(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}),
+\end{equation}
+and the computation is independent of $m$.
+
+We can thus iteratively apply the update rule of Eq. (??) to decrease the cost function. It is very unlikely that the minimum that we find with stochastic gradient descent is the global minimum of $J(\bm{\theta})$. In most cases, we will only obtain a local minimum which hopefully still is good enough for the task that we want to solve.
+
+If the learning rate $\eta$ is small, the model will learn slowly, but it will likely reach a minimum. If $\eta$ is large, it will learn faster, but it could potentially overshoot a minimum.
+
+Many variations of stochastic gradient descent exist. They usually make use of higher order derivatives or approximations thereof and dynamically adjust the learning rate. A comprehensive comparison can be found in Ref. .
+
+\subsection{The Back-propagation Algorithm}
