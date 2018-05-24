@@ -21,7 +21,7 @@ We choose the particular per-example cost function $L$ based on the task that we
 
 In regression, a good choice is the \emph{mean squared error}
 \begin{equation}
-L(\bm{x}, y, \bm{\theta}) = \frac1{2}||\hat{y}-y||^2,
+L(\bm{x}, y, \bm{\theta}) = \frac1{2}\lVert\hat{y}-y\rVert^2,
 \end{equation}
 which simply corresponds to the distance of the desired output from the actual output. It can easily be seen that it satisfies the properties of a cost function.
 
@@ -46,3 +46,45 @@ We obtain the mean squared error from the MLE if we regard the true probability 
 %TODO: keep all this? or only mention MLE and move on?
 
 \subsection{Stochastic Gradient Descent}
+Minimizing cost functions is similar to any other minimization problem. A variety of algorithms exist to minimize functions, but stochastic gradient descent, an extension of gradient descent, is particularly dominant in neural network training.
+
+As the name suggests, gradient descent makes use of the gradient of the cost function, in order to iteratively find parameters that decrease the cost. In particular, we know from Calculus that a small change $\bm{v}$ in $\bm{\theta}$ corresponds roughly to the change
+\begin{equation}
+\Delta J(\bm{\theta}) \approx \nabla J(\bm{\theta})^{\top}\bm{v}
+\end{equation}
+in $J(\bm{\theta})$. It can be shown that the choice of $\bm{v}$ which decreases the error the fastest and thus minimizes $\Delta J(\bm{\theta})$ is
+\begin{equation}
+\bm{v} = -\eta\nabla J(\bm{\theta}),
+\end{equation}
+where $\eta$ is the \emph{learning rate}. Hence, gradient descent iteratively chooses the point
+\begin{equation}
+\bar{\bm{\theta}} = \bm{\theta} - \eta\nabla J(\bm{\theta}).
+\end{equation}
+
+Impact of learning rate.
+
+Stochastic gradient descent.
+
+Variations.
+
+\begin{comment}
+Applying the Cauchy-Schwarz inequality, we obtain
+\begin{equation}\label{eq:cauchy-schwarz}
+-\lVert\nabla J(\bm{\theta})\rVert\lVert v\rVert \leq
+\nabla J(\bm{\theta})^{\top}\bm{v} \leq
+\lVert\nabla J(\bm{\theta})\rVert\lVert v\rVert.
+\end{equation}
+We observe that, if we set $\bm{v} = -\eta\nabla J(\bm{\theta})$, then
+\begin{equation}
+\nabla J(\bm{\theta})^{\top}\bm{v} = -\eta\lVert\nabla J(\bm{\theta})\rVert^2,
+\end{equation}
+which is exactly the left-hand side of Eq. \eqref{eq:cauchy-schwarz}. Thus, in order to minimize $\Delta J(\bm{\theta})$, we can choose new parameters $\bar{\bm{\theta}}$ with the update rule
+\begin{equation}
+\bar{\bm{\theta}} = \bm{\theta} - \eta\nabla J(\bm{\theta}),
+\end{equation}
+\end{comment}
+
+\subsection{The Back-propagation Algorithm}
+Backprop.
+
+Complete training algorithm.
