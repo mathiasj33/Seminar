@@ -46,58 +46,30 @@ We obtain the mean squared error from the MLE if we regard the true probability 
 \subsection{Stochastic Gradient Descent}
 Minimizing cost functions is similar to any other minimization problem. A variety of algorithms exist to minimize functions, but stochastic gradient descent, an extension of gradient descent, is particularly dominant in neural network training.
 
-As the name suggests, gradient descent makes use of the gradient of the cost function, in order to iteratively find parameters that decrease the cost. In particular, we know from Calculus that a small change $\bm{v}$ in $\bm{\theta}$ corresponds roughly to the change
+As the name suggests, gradient descent makes use of the gradient of the cost function to iteratively improve the parameters to decrease the cost. In particular, we know from calculus that a small change $\Delta\bm{\theta}$ in $\bm{\theta}$ corresponds roughly to the change
 \begin{equation}
-\Delta J(\bm{\theta}) \approx \nabla J(\bm{\theta})^{\top}\bm{v}
+\Delta J(\bm{\theta}) \approx \nabla J(\bm{\theta})^{\top}\Delta\bm{\theta}
 \end{equation}
-in $J(\bm{\theta})$. It can be shown that the choice of $\bm{v}$ which decreases the error the fastest and thus minimizes $\Delta J(\bm{\theta})$ is
+in $J(\bm{\theta})$. It can be shown that the choice of $\Delta\bm{\theta}$ which decreases the cost the fastest and thus minimizes $\Delta J(\bm{\theta})$ is
 \begin{equation}
-\bm{v} = -\eta\nabla J(\bm{\theta}),
+\Delta\bm{\theta} = -\eta\nabla J(\bm{\theta}),
 \end{equation}
-where $\eta$ is the \emph{learning rate}. Hence, gradient descent iteratively chooses the point
-\begin{equation}
-\bar{\bm{\theta}} = \bm{\theta} - \eta\nabla J(\bm{\theta}).
-\end{equation}
+where $\eta$ is the \emph{learning rate} \cite[ Ch.\,4,\,p.\,82]{DBLP:books/daglib/0040158}. This means that we can improve a neural network by making small changes to the parameters in the negative direction of the gradient of the cost function.
 
-Impact of learning rate.
-
-Stochastic gradient descent.
-
-Variations.
-
-\begin{comment}
-Applying the Cauchy-Schwarz inequality, we obtain
-\begin{equation}\label{eq:cauchy-schwarz}
--\lVert\nabla J(\bm{\theta})\rVert\lVert v\rVert \leq
-\nabla J(\bm{\theta})^{\top}\bm{v} \leq
-\lVert\nabla J(\bm{\theta})\rVert\lVert v\rVert.
-\end{equation}
-We observe that, if we set $\bm{v} = -\eta\nabla J(\bm{\theta})$, then
-\begin{equation}
-\nabla J(\bm{\theta})^{\top}\bm{v} = -\eta\lVert\nabla J(\bm{\theta})\rVert^2,
-\end{equation}
-which is exactly the left-hand side of Eq. \eqref{eq:cauchy-schwarz}. Thus, in order to minimize $\Delta J(\bm{\theta})$, we can choose new parameters $\bar{\bm{\theta}}$ with the update rule
-\begin{equation}
-\bar{\bm{\theta}} = \bm{\theta} - \eta\nabla J(\bm{\theta}),
-\end{equation}
-\end{comment}
-
-Complete training algorithm.
+The learning rate $\eta$ controls the size of the update steps performed by gradient descent. It should neither be too small, nor too large: if it is small, the model only learns very slowly, and if it is large, we risk making updates that unintentionally increase the loss, since the gradient is only an approximation of the real cost function.
 
 The problem with using gradient descent to train neural networks is that computing the gradient is linear in the number of training examples $m$. To see this, note that
 \begin{equation}
-\nabla J(\bm{\theta}) = \frac1{m}\sum_{i=1}^{m}\nabla L(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}).
+\nabla J(\bm{\theta}) = \frac1{m}\sum_{i=1}^{m}\nabla \loss(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}).
 \end{equation}
-The key insight of \emph{stochastic} gradient descent is that the gradient can be approximated by averaging only over a subset of training examples $\mathbb{B} \subseteq \mathbb{X}$ called a \emph{batch}. Thus, the gradient computation becomes
+\emph{Stochastic} gradient descent resolves this dependency by computing an approximation of the gradient by averaging over only a subset of training examples $\mathbb{B}$ called a \emph{minibatch}. The gradient computation becomes
 \begin{equation}
-\nabla J(\bm{\theta}) = \frac1{|\mathbb{B}|}\sum_{x\in\mathbb{B}}\nabla L(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}),
+\nabla J(\bm{\theta}) = \frac1{|\mathbb{B}|}\sum_{(\bm{x},\bm{y})\in\mathbb{B}}\nabla \loss(\bm{x},\bm{y},\bm{\theta}),
 \end{equation}
-and the computation is independent of $m$.
+which is independent of $m$. The size $|\mathbb{B}|$ of the minibatches is not increased with the amount of training data.
 
-We can thus iteratively apply the update rule of Eq. (??) to decrease the cost function. It is very unlikely that the minimum that we find with stochastic gradient descent is the global minimum of $J(\bm{\theta})$. In most cases, we will only obtain a local minimum which hopefully still is good enough for the task that we want to solve.
-
-If the learning rate $\eta$ is small, the model will learn slowly, but it will likely reach a minimum. If $\eta$ is large, it will learn faster, but it could potentially overshoot a minimum.
-
-Many variations of stochastic gradient descent exist. They usually make use of higher order derivatives or approximations thereof and dynamically adjust the learning rate. A comprehensive comparison can be found in Ref. .
+Many variations of stochastic gradient descent exist. They usually make use of higher order derivatives or approximations thereof and dynamically adjust the learning rate \cite{DBLP:journals/corr/Ruder16}.
 
 \subsection{The Back-propagation Algorithm}
+
+%TODO: Complete training algorithm.
