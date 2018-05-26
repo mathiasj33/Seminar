@@ -67,9 +67,11 @@ In contrast to the output layer, the task that we want so solve does not give us
 
 We can think of the hidden layers as a means to learn a different representation of the input. The neural network transforms the input by propagating it through its hidden layers until it obtains a representation where it can perform its assigned task much easier. For example, in object recognition, one can show that neural networks learn to detect different features such as edges or individual object parts in different hidden layers \cite{DBLP:conf/eccv/ZeilerF14}. It is thus not surprising that deeper neural networks often perform better than shallow ones. On the other hand, deep neural networks are often difficult and computationally expensive to train.
 
-Another important consideration is the activation function used in hidden layers. Common activation functions include the logistic sigmoid, which we have already presented, the $\tanh$ function, which is only a slight variation of the logistic sigmoid function, and the rectified linear function $g(x) = \max\{0,x\}$, a plot of which can be found in Fig. \ref{fig:relu}.
+Another important consideration is the activation function used in hidden layers. Common activation functions include the logistic sigmoid, which we have already presented, the $\tanh$ function, which is only a variation of the logistic sigmoid function, and the rectified linear function $g(x) = \max\{0,x\}$.
+%, a plot of which can be found in Fig. \ref{fig:relu}.
 %TODO: keep this?
 
+\begin{comment}
 \begin{figure}
 	\begin{center}
 		\input{relu_fig}
@@ -77,6 +79,7 @@ Another important consideration is the activation function used in hidden layers
 	\caption{The rectified linear function.}
 	\label{fig:relu}
 \end{figure}
+\end{comment}
 
 Activation functions are continuous, a property needed for the training algorithm, and generally non-linear, since a network consisting of only linear hidden layers is linear as a whole, suffering from the same drawbacks that we saw in the perceptron model \cite[Ch.\,6,\,p.\,190]{DBLP:books/daglib/0040158}.
 
@@ -94,13 +97,14 @@ We can now denote the output $\bm{a}^{(l)}$ of the \nth{l} layer as
 \begin{equation}
 \bm{a}^{(l)} = f^{(l)}\left(\bm{W}^{(l)\top}\bm{a}^{(l-1)}+\bm{b}^{(l)}\right),
 \end{equation}
-where we define $\bm{a}^{(0)} = \bm{x}$. The output of the whole network then is simply given by $\hat{\bm{y}} = \bm{a}^{(L)}$. We also define the vector of weighted inputs $\bm{z}^{(l)}$ at layer $l$ as
+where $\bm{a}^{(0)} = \bm{x}$. The output of the whole network then is simply given by $\hat{\bm{y}} = \bm{a}^{(L)}$. We also define the vector of weighted inputs $\bm{z}^{(l)}$ at layer $l$ as
 \begin{equation}
 \bm{z}^{(l)} = \bm{W}^{(l)\top}\bm{a}^{(l-1)}+\bm{b}^{(l)}.
 \end{equation}
 
 Note that these expressions are very similar to the formulation of the perceptron model in Eq. \eqref{eq:perceptron2} and \eqref{eq:perceptron3}. The only difference is that we now use matrices, since there are multiple neurons in a layer, and that the total output consists of a chain of multiple such functions.
 
+As shorthand notation, we will sometimes refer to the parameters of a neural network as $\bm{\theta}$ and to the whole neural network as $f(\bm{\theta})$, abstracting away the individual layers.
 \begin{comment}
 \begin{equation}
 f(\bm{x}) = f^{(L)}(\bm{W}^{(L)\top}f^{(L-1)}(\bm{W}^{(L-1)\top}\dotsm+\bm{b}^{(l-1)})+\bm{b}^{(L)}
