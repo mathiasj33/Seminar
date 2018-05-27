@@ -71,5 +71,89 @@ which is independent of $m$. The size $|\mathbb{B}|$ of the minibatches is not i
 Many variations of stochastic gradient descent exist. They usually make use of higher order derivatives or approximations thereof and dynamically adjust the learning rate \cite{DBLP:journals/corr/Ruder16}.
 
 \subsection{The Back-propagation Algorithm}
+An efficient way of computing the gradient of the cost function is the back-propagation algorithm \cite{Rumelhart1986533}. Beginning from the output layer, the algorithm computes the partial derivatives of all the weights and biases up to the first hidden layer. In the remainder of this section, we derive this procedure mathematically and show how it can be used in combination with stochastic gradient descent to train feedforward neural networks. We assume familiarity with basic multivariable calculus, in particular, with the chain rule of multivariable calculus. The derivation we present is closely based on Ref. \cite[Ch.\,2]{Nielsen2015}.
 
-%TODO: Complete training algorithm.
+Following Nielsen\cite{Nielsen2015}, we introduce the quantity
+\begin{equation}
+\delta_j^{(l)} = \frac{\partial J}{\partial z_j^{(l)}},
+\end{equation}
+which is a measure of the error in the \nth{j} neuron of the \nth{l} layer: if $\delta_j^{(l)}$ is large, changing the parameters of this neuron can decrease the cost considerably, and if it is small, the neuron is already near-optimal. The error is closely related to the quantities of interest: with the chain rule, we obtain
+\begin{equation}
+\frac{\partial J}{\partial b_j^{(l)}}
+= \frac{\partial J}{\partial z_j^{(l)}}\frac{\partial z_j^{(l)}}{\partial b_j^{(l)}}
+= \delta_j^{(l)} \frac{\partial\left (\sum_{i}w_{ij}^{(l)}a_i^{(l-1)} + b_j^{(l)}\right)}{\partial b_j^{(l)}}
+= \delta_j^{(l)}
+\end{equation}
+and similarly
+\begin{equation}
+\frac{\partial J}{\partial w_{ij}^{(l)}}
+= \frac{\partial J}{\partial z_j^{(l)}}\frac{\partial z_j^{(l)}}{\partial w_{ij}^{(l)}}
+= \delta_j^{(l)} \frac{\partial z_j^{(l)}}{\partial w_{ij}^{(l)}}
+= \delta_j^{(l)}a_i^{(l-1)}.
+\end{equation}
+We can arrange those derivatives in vectors and matrices matching the bias vectors and weight matrices in dimension. The bias derivative vector is simply given by $\bm{\delta}^{(l)}$ and the matrix of weight derivatives is $\bm{a}^{(l-1)}\bm{\delta}^{(l)\top}$.
+
+All that remains is the calculation of $\bm{\delta}^{(l)}$ itself. We start with the output layer $L$:
+\begin{equation}
+\delta_j^{(L)} = \frac{\partial J}{\partial z_j^{(L)}}
+= \frac{\partial J}{\partial \hat{y}_j} \frac{\partial \hat{y}_j}{\partial z_j^{(L)}}
+= \frac{\partial J}{\partial \hat{y}_j} f^{(L)\prime}\left (z_j^{(L)}\right ),
+\end{equation}
+which can be written as
+\begin{equation}
+\bm{\delta}^{(L)} = \nabla_{\hat{\bm{y}}}J \odot f^{(L)\prime}\left (z^{(L)}\right )
+\end{equation}
+in vector notation, where $\bm{x} \odot \bm{y}$ denotes the entrywise product between $\bm{x}$ and $\bm{y}$.
+
+Finally, we can propagate this error to earlier layers. Again applying the chain rule,
+\begin{equation}
+\delta_j^{(l)} = \frac{\partial J}{\partial z_j^{(l)}}
+= \sum_k \frac{\partial J}{\partial z_k^{(l+1)}} \frac{\partial z_k^{(l+1)}}{\partial z_j^{(l)}}
+= \sum_k \delta_k^{(l+1)} \frac{\partial z_k^{(l+1)}}{\partial z_j^{(l)}},
+\end{equation}
+where the sum is over all neurons in the \nth{(l+1)} layer. Note that
+\begin{equation}
+\begin{gathered}
+\frac{\partial z_k^{(l+1)}}{\partial z_j^{(l)}}
+= \frac{\partial\left (
+	\sum_j w_{jk}^{(l+1)}f^{(l)}\left (z_j^{(l)}\right )+b_k^{(l+1)}
+	\right )}{\partial z_j^{(l)}}\\
+= w_{jk}^{(l+1)}f^{(l)\prime}\left (z_j^{(l)}\right ).
+\end{gathered}
+\end{equation}
+Substituting back, we obtain
+\begin{equation}
+\delta_j^{(l)} = \sum_k \delta_k^{(l+1)} w_{jk}^{(l+1)}f^{(l)\prime}\left (z_j^{(l)}\right ),
+\end{equation}
+which is easily expressed in matrix notation:
+\begin{equation}
+\bm{\delta}^{(l)} = \bm{W}^{(l+1)} \bm{\delta}^{(l+1)} \odot f^{(l)\prime}\left (\bm{z}^{(l)}\right ).
+\end{equation}
+
+Combining these expressions for the computation of the gradient with stochastic gradient descent yields the complete learning algorithm for feedforward neural networks listed in algorithm \ref{alg:learning} \cite{Nielsen2015,DBLP:books/daglib/0040158}.
+
+\begin{algorithm}
+	\caption{The learning algorithm for a feedforward neural network. The algorithm computes one stochastic gradient descent update, given a minibatch $\mathbb{B}$.}
+	\begin{algorithmic}
+		\Require{A minibatch of training examples $\mathbb{B}$}
+		\Require{The model composed of weight matrices $\bm{W}^{(i)}$, bias vectors $\bm{b}^{(i)}$, and activation functions $f^{(i)}$}
+		\For{$(\bm{x}, \bm{y}) \in \mathbb{B}$}
+		\State{$\bm{a}^{(\bm{x},1)} = \bm{x}$}
+		\For{$l = 2,\ldots,L$}\Comment{forward propagation}
+		\State{$\bm{z}^{(\bm{x},l)} = \bm{W}^{(l)\top}\bm{a}^{(\bm{x},l-1)} + \bm{b}^{(l)}$}
+		\State{$\bm{a}^{(\bm{x},l)} = f^{(l)}\left (\bm{z}^{(\bm{x},l)}\right )$}
+		\EndFor
+		\State{$\bm{\delta}^{(\bm{x},L)} = \nabla_{\hat{\bm{y}}}J \odot f^{(L)\prime}\left (z^{(\bm{x},L)}\right )$}
+		\For{$l = L-1, \ldots, 2$} \Comment{back-propagation}
+		\State{$\bm{\delta}^{(\bm{x},l)} = \bm{W}^{(l+1)} \bm{\delta}^{(\bm{x},l+1)} \odot f^{(l)\prime}\left (\bm{z}^{(\bm{x},l)}\right )$}
+		\EndFor
+		\EndFor
+		\For{$l = L, \ldots, 2$}\Comment{gradient descent}
+		\State{$\bm{W}^{(l)} \gets \bm{W}^{(l)} - \frac{\eta}{m} \sum_{x \in \mathbb{B}} \bm{a}^{(\bm{x},l-1)}\bm{\delta}^{(\bm{x},l)\top}$}
+		\State{$\bm{b}^{(\bm{x}, l)} \gets \bm{b}^{(\bm{x}, l)} - \frac{\eta}{m} \sum_{x \in \mathbb{B}}
+			\bm{\delta{(\bm{x}, l)}}$}
+		\EndFor
+	\end{algorithmic}
+	\label{alg:learning}
+\end{algorithm}
+
