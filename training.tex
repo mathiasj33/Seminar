@@ -71,21 +71,21 @@ which is independent of $m$. The size $|\mathbb{B}|$ of the minibatches is not i
 Many variations of stochastic gradient descent exist. They usually make use of higher order derivatives or approximations thereof and dynamically adjust the learning rate \cite{DBLP:journals/corr/Ruder16}.
 
 \subsection{The Back-propagation Algorithm}
-An efficient way of computing the gradient of the cost function is the back-propagation algorithm \cite{Rumelhart1986533}. Beginning from the output layer, the algorithm computes the partial derivatives of all the weights and biases up to the first hidden layer. In the remainder of this section, we derive this procedure mathematically and show how it can be used in combination with stochastic gradient descent to train feedforward neural networks. We assume familiarity with basic multivariable calculus, in particular, with the chain rule of multivariable calculus. The derivation we present is closely based on Ref. \cite[Ch.\,2]{Nielsen2015}.
+An efficient way of computing the gradient of the cost function is the back-propagation algorithm \cite{Rumelhart1986533}. Beginning from the output layer, the algorithm computes the partial derivatives of all the weights and biases up to the first hidden layer. In the remainder of this section, we derive this procedure mathematically and show how it can be used in combination with stochastic gradient descent to train feedforward neural networks. We assume familiarity with basic multivariable calculus. The derivation we present is closely based on Ref. \cite[Ch.\,2]{Nielsen2015}.
 
 Following Nielsen\cite{Nielsen2015}, we introduce the quantity
 \begin{equation}
 \delta_j^{(l)} = \frac{\partial J}{\partial z_j^{(l)}},
 \end{equation}
 which is a measure of the error in the \nth{j} neuron of the \nth{l} layer: if $\delta_j^{(l)}$ is large, changing the parameters of this neuron can decrease the cost considerably, and if it is small, the neuron is already near-optimal. The error is closely related to the quantities of interest: with the chain rule, we obtain
-\begin{equation}
+\begin{equation}\label{eq:bp1}
 \frac{\partial J}{\partial b_j^{(l)}}
 = \frac{\partial J}{\partial z_j^{(l)}}\frac{\partial z_j^{(l)}}{\partial b_j^{(l)}}
 = \delta_j^{(l)} \frac{\partial\left (\sum_{i}w_{ij}^{(l)}a_i^{(l-1)} + b_j^{(l)}\right)}{\partial b_j^{(l)}}
 = \delta_j^{(l)}
 \end{equation}
 and similarly
-\begin{equation}
+\begin{equation}\label{eq:bp2}
 \frac{\partial J}{\partial w_{ij}^{(l)}}
 = \frac{\partial J}{\partial z_j^{(l)}}\frac{\partial z_j^{(l)}}{\partial w_{ij}^{(l)}}
 = \delta_j^{(l)} \frac{\partial z_j^{(l)}}{\partial w_{ij}^{(l)}}
@@ -130,7 +130,9 @@ which is easily expressed in matrix notation:
 \bm{\delta}^{(l)} = \bm{W}^{(l+1)} \bm{\delta}^{(l+1)} \odot f^{(l)\prime}\left (\bm{z}^{(l)}\right ).
 \end{equation}
 
-Combining these expressions for the computation of the gradient with stochastic gradient descent yields the complete learning algorithm for feedforward neural networks listed in algorithm \ref{alg:learning} \cite{Nielsen2015,DBLP:books/daglib/0040158}.
+These expressions allow for a very efficient computation of the gradient. First, we propagate the input vector of a particular training example forward through the network to obtain the output $\hat{\bm{y}}$. From this, we can calculate the cost $J(\bm{\theta})$ and the error $\bm{\delta}^{(L)}$ in the output layer. This error is then propagated backwards through the hidden layers, where we can easily compute the derivatives using Eq. \eqref{eq:bp1} and \eqref{eq:bp2}.
+
+Combining back-propagation with stochastic gradient descent yields the complete learning algorithm for feedforward neural networks, which is formalized in algorithm \ref{alg:learning} \cite{Nielsen2015,DBLP:books/daglib/0040158}.
 
 \begin{algorithm}
 	\caption{The learning algorithm for a feedforward neural network. The algorithm computes one stochastic gradient descent update, given a minibatch $\mathbb{B}$.}
@@ -143,17 +145,16 @@ Combining these expressions for the computation of the gradient with stochastic 
 		\State{$\bm{z}^{(\bm{x},l)} = \bm{W}^{(l)\top}\bm{a}^{(\bm{x},l-1)} + \bm{b}^{(l)}$}
 		\State{$\bm{a}^{(\bm{x},l)} = f^{(l)}\left (\bm{z}^{(\bm{x},l)}\right )$}
 		\EndFor
-		\State{$\bm{\delta}^{(\bm{x},L)} = \nabla_{\hat{\bm{y}}}J \odot f^{(L)\prime}\left (z^{(\bm{x},L)}\right )$}
+		\State{$\bm{\delta}^{(\bm{x},L)} = \nabla_{\hat{\bm{y}}}J \odot f^{(L)\prime}\left (\bm{z}^{(\bm{x},L)}\right )$}
 		\For{$l = L-1, \ldots, 2$} \Comment{back-propagation}
 		\State{$\bm{\delta}^{(\bm{x},l)} = \bm{W}^{(l+1)} \bm{\delta}^{(\bm{x},l+1)} \odot f^{(l)\prime}\left (\bm{z}^{(\bm{x},l)}\right )$}
 		\EndFor
 		\EndFor
 		\For{$l = L, \ldots, 2$}\Comment{gradient descent}
-		\State{$\bm{W}^{(l)} \gets \bm{W}^{(l)} - \frac{\eta}{m} \sum_{x \in \mathbb{B}} \bm{a}^{(\bm{x},l-1)}\bm{\delta}^{(\bm{x},l)\top}$}
-		\State{$\bm{b}^{(\bm{x}, l)} \gets \bm{b}^{(\bm{x}, l)} - \frac{\eta}{m} \sum_{x \in \mathbb{B}}
-			\bm{\delta{(\bm{x}, l)}}$}
+		\State{$\bm{W}^{(l)} \gets \bm{W}^{(l)} - \frac{\eta}{m} \sum_{(\bm{x}, \bm{y}) \in \mathbb{B}} \bm{a}^{(\bm{x},l-1)}\bm{\delta}^{(\bm{x},l)\top}$}
+		\State{$\bm{b}^{(l)} \gets \bm{b}^{(l)} - \frac{\eta}{m} \sum_{(\bm{x}, \bm{y}) \in \mathbb{B}}
+			\bm{\delta}^{(\bm{x}, l)}$}
 		\EndFor
 	\end{algorithmic}
 	\label{alg:learning}
 \end{algorithm}
-
