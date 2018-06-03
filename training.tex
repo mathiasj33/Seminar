@@ -7,13 +7,13 @@ In a binary classification setting, the labels $y^{(i)}$ are either 0 or 1 to in
 Suppose we are given such a set of training data and a neural network $f(\bm{\theta})$. In this section, we explore how we can choose $\bm{\theta}$ in order that the network learns the mapping described by the training data, mainly utilizing concepts presented in Ref. \cite{DBLP:books/daglib/0040158} and \cite{Nielsen2015}.
 
 \subsection{Cost functions}
-Since we start with a random set of parameters which we wish to improve, we need some kind of measure of how good the network performs. For this, we introduce the \emph{cost function} $J(\bm{\theta})$, sometimes also referred to as \emph{loss} or \emph{error} function. $J(\bm{\theta})$ produces a scalar cost which is non-negative and the closer it is to 0, the better our network performs. We can thus reframe the training problem as minimizing the cost function.
+Since we start with a random set of parameters which we wish to improve, we need some kind of measure of how good the network performs. For this, we introduce the \emph{cost function} $J(\bm{\theta})$, sometimes also referred to as \emph{loss} or \emph{error} function. $J(\bm{\theta})$ produces a scalar cost which is non-negative and the closer it is to 0, the better our network performs. We can thus reframe the training problem as \emph{minimizing the cost function}.
 
 The cost functions that we will consider can all be represented as sums over the costs of the individual training examples:
 \begin{equation}
 J(\bm{\theta}) = \frac1{m}\sum_{i=1}^{m}\loss(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}),
 \end{equation}
-where $\loss$ is the loss for an individual training example \cite[Ch.\,5,\,pp.\,147-148]{DBLP:books/daglib/0040158}. We scale $J$ by $1/m$ to make the cost independent of the number of training examples $m$.
+where $\loss$ is the loss for an individual training example. We scale $J$ by $1/m$ to make the cost independent of the number of training examples $m$.
 
 The particular per-example cost function $\loss$ is chosen based on the task that we wish to perform.
 
@@ -40,8 +40,7 @@ While these functions might seem rather different, they can all be derived with 
 \hat{\bm{\theta}} = \argmax_{\bm{\theta}} P_{\text{model}}(\mathbb{Y}\given\mathbb{X}; \bm{\theta}).
 \end{equation}
 
-We obtain the mean squared error from the MLE if we regard the true probability distribution of the data as a Gaussian distribution. In the case of binary and multiclass classification, we regard the true probability distribution as a Bernoulli or Multinoulli distribution, respectively \cite[ Ch.\,6,\,pp.\,175-185]{DBLP:books/daglib/0040158}.
-%TODO: keep all this? or only mention MLE and move on?
+We obtain the mean squared error from the MLE if we regard the true probability distribution of the data as a Gaussian distribution. In the case of binary and multiclass classification, we regard the true probability distribution as a Bernoulli or Multinoulli distribution, respectively \cite[Ch.\,6,\,pp.\,175-185]{DBLP:books/daglib/0040158}.
 
 \subsection{Stochastic Gradient Descent}
 Minimizing cost functions is similar to any other minimization problem. A variety of algorithms exist to minimize functions, but stochastic gradient descent, an extension of gradient descent, is particularly dominant in neural network training.
@@ -103,7 +102,7 @@ which, in vector notation, becomes
 \begin{equation}
 \bm{\delta}^{(L)} = \nabla_{\hat{\bm{y}}}J \odot f^{(L)\prime}\left (\bm{z}^{(L)}\right ).
 \end{equation}
-Here, $\bm{x} \odot \bm{y}$ denotes the entrywise product between $\bm{x}$ and $\bm{y}$.
+Here, $\bm{x} \odot \bm{y}$ denotes the entry-wise product between $\bm{x}$ and $\bm{y}$.
 
 Finally, the output error can be propagated back to earlier layers. Again applying the chain rule,
 \begin{equation}
@@ -165,4 +164,3 @@ Combining back-propagation with stochastic gradient descent yields the complete 
 The back-propagation equations give us some insight into why training sometimes is difficult. For example, if we choose the logistic sigmoid function as activation function for a particular hidden layer, we can see from Eq. \eqref{eq:bp3} that the error is multiplied with $\sigma'\left (\bm{z}^{(l)}\right )$. Since the logistic sigmoid function gets very flat for input of large absolute value, its gradient is close to 0 for such inputs. If the gradient is near 0, the update steps of stochastic gradient descent become very small, and the network thus learns slowly
  \cite[Ch.\,6,\,p.\,189]{DBLP:books/daglib/0040158}.
 \end{comment}
-%TODO: keep??

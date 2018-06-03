@@ -3,7 +3,7 @@
 A natural extension of the perceptron model is to combine multiple perceptrons in a network architecture called a neural network. It is intuitively clear that, much like in an organic brain, a complex arrangement of many simple computing units can learn much more complicated functions than those simple units alone. In this section, we will examine how such a network architecture based on perceptrons can be constructed. The ideas that we develop are mostly based on Ref. \cite[Ch.\,6]{DBLP:books/daglib/0040158}.
 
 \subsection{Extensions to the Perceptron}
-Before explaining the composition of perceptrons to neural networks, we will first explore two common extensions to the perceptron model.
+Before explaining the composition of perceptrons to neural networks, we will first explore two common extensions to the perceptron model, which are required in the network architecture we develop.
 
 First, we introduce an additional term called \emph{bias} to the output calculation. The new output $\hat{y}$ becomes
 \begin{equation}\label{eq:perceptron2}
@@ -71,7 +71,6 @@ We can think of the hidden layers as a means to learn a different representation
 
 Another important consideration is the activation function used in hidden layers. Common activation functions include the logistic sigmoid, which we have already presented, the $\tanh$ function, which is only a variation of the logistic sigmoid function, and the rectified linear function $g(x) = \max\{0,x\}$.
 %, a plot of which can be found in Fig. \ref{fig:relu}.
-%TODO: keep this?
 
 \begin{comment}
 \begin{figure}
