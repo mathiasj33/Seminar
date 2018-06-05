@@ -1,6 +1,6 @@
 \section{Training Feedforward Neural Networks}
 \label{sec:training}
-Similar to the perceptron model, when training neural networks, we have a set of $m$ training examples $\mathbb{X} = \{\bm{x}^{(1)}, \ldots, \bm{x}^{(m)}\}$ with corresponding labels $\mathbb{Y}$, and wish to iteratively adjust the parameters $\bm{\theta}$ of the neural network to learn a mapping from $\mathbb{X}$ to $\mathbb{Y}$. The parameters are usually randomly initialized.
+Similar to the perceptron model, when training neural networks, we have a list of $m$ training examples $\mathbb{X} = (\bm{x}^{(1)}, \ldots, \bm{x}^{(m)})$ with corresponding labels $\mathbb{Y}$, and wish to iteratively adjust the parameters $\bm{\theta}$ of the neural network to learn a mapping from $\mathbb{X}$ to $\mathbb{Y}$. The parameters are usually randomly initialized.
 
 In a binary classification setting, the labels $y^{(i)}$ are either 0 or 1 to indicate one of the two classes. In multiclass problems, they encode one of $k$ classes in a \emph{one-hot} fashion: in this case, $\bm{y}^{(i)}$ is a $k$-dimensional vector whose \nth{i} entry is 1 if $\bm{y}^{(i)}$ represents the \nth{i} class. All other entries are equal to 0. Finally, in regression, the labels are simply the scalar values that we want to predict.
 
@@ -21,7 +21,7 @@ In regression, a good choice is the \emph{mean squared error}
 \begin{equation}
 \loss(\bm{x}, y, \bm{\theta}) = \frac1{2}(\hat{y}-y)^2,
 \end{equation}
-which simply corresponds to the distance of the desired output from the actual output. It can easily be seen that it satisfies the properties of a cost function: it is always non-negative and if $\hat{y}$ is similar to $y$, then $(\hat{y}-y)^2/2 \approx 0$.
+which simply corresponds to the distance of the desired output $y$ from the actual output $\hat{y}$. It can easily be seen that it satisfies the properties of a cost function: it is always non-negative and if $\hat{y}$ is similar to $y$, then $(\hat{y}-y)^2/2 \approx 0$.
 
 The mean squared error is also a valid cost function in  binary classification problems. However, it has some undesirable properties that can make training very difficult in this setting \cite[Ch.\,6,\,p.\,178]{DBLP:books/daglib/0040158}. Hence, a different cost function, called the \emph{cross-entropy}, is commonly chosen. The cross-entropy loss is defined as
 \begin{equation}
@@ -61,7 +61,7 @@ The problem with using gradient descent to train neural networks is that computi
 \begin{equation}
 \nabla J(\bm{\theta}) = \frac1{m}\sum_{i=1}^{m}\nabla \loss(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}).
 \end{equation}
-\emph{Stochastic} gradient descent resolves this dependency by computing an approximation of the gradient by averaging over only a subset of training examples $\mathbb{B}$ called a \emph{minibatch}. The gradient computation becomes
+\emph{Stochastic} gradient descent resolves this dependency by computing an approximation of the gradient by averaging over only a subset of training examples with corresponding labels $\mathbb{B}$ called a \emph{minibatch}. The gradient computation becomes
 \begin{equation}
 \nabla J(\bm{\theta}) = \frac1{|\mathbb{B}|}\sum_{(\bm{x},\bm{y})\in\mathbb{B}}\nabla \loss(\bm{x},\bm{y},\bm{\theta}),
 \end{equation}

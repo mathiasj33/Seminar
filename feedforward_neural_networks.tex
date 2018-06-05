@@ -9,7 +9,7 @@ First, we introduce an additional term called \emph{bias} to the output calculat
 \begin{equation}\label{eq:perceptron2}
 \hat{y} = \sign(\bm{w}^\top\bm{x} + b),
 \end{equation}
-where the scalar $b$ is the bias. This additional learnable parameter shifts the function computed by the model independently of its input. If the bias is large and positive, the model is more inclined to predict a positive label, while a negative bias makes it more likely that negative labels are predicted.
+where the scalar $b$ is the bias. This additional learnable parameter shifts the function computed by the model \emph{independently of its input}. If the bias is large and positive, the model is generally more inclined to predict a positive label, while a negative bias makes it more likely that negative labels are predicted.
 
 Second, we generalize the perceptron by replacing the $\sign$ function with an arbitrary function $f$ called \emph{activation function}. In contrast to $\sign(x)$, most activation functions used in neural networks are continuous, since this enables us to use a variety of \emph{gradient-based} learning algorithms for training as we will see in Section \ref{sec:training}. Concrete examples of activation functions will be discussed later in this section.
 

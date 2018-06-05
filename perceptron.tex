@@ -25,7 +25,7 @@ For a visual representation of this model, see Fig. \ref{fig:perceptron}.
 	\label{fig:perceptron}
 \end{figure}
 
-Perceptron models can be used to solve binary classification problems. In this scenario, we are given a set of $m$ training examples $\mathbb{X} = \{\bm{x}^{(1)}, \ldots, \bm{x}^{(m)}\}$ and their corresponding binary labels $\mathbb{Y}$, and wish to predict the most probable label for an unseen vector $\bm{x} \notin \mathbb{X}$.
+Perceptron models can be used to solve binary classification problems. In this scenario, we are given a list of $m$ training examples $\mathbb{X} = (\bm{x}^{(1)}, \ldots, \bm{x}^{(m)})$ and their corresponding binary labels $\mathbb{Y}$, and wish to predict the most probable label for an unseen vector $\bm{x} \notin \mathbb{X}$.
 
 For example, the vectors $\bm{x}^{(i)}$ might describe features of an email using a \emph{bag-of-words} representation. That is, we define a fixed vocabulary, and the \nth{j} entry in the vector $\bm{x}^{(i)}$ specifies how often the \nth{j} word of the vocabulary occurs in the particular email represented by $\bm{x}^{(i)}$. The corresponding label $y^{(i)} = 1$ then might signify that the email is a legitimate email, whereas a value of $y^{(i)} = -1$ might label the email as spam.
 
