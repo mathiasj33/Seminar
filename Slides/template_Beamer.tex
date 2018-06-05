@@ -1,19 +1,94 @@
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
-\usetheme{metropolis}           % Use metropolis theme
+\usepackage{graphicx}
+\usepackage[justification=centering]{caption}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+
+\DeclareMathOperator{\sign}{sign}
+
+\usetheme[sectionpage=progressbar, progressbar=frametitle]{metropolis}
+\setbeamertemplate{section in toc}{\inserttocsectionnumber.~\inserttocsection}
+
 \title{Fundamentals of Neural Networks}
 \date{\today}
 \author{Mathias Jackermeier}
 \institute{Technische Universität München}
 \begin{document}
 	\maketitle
-	\section{Introduction}
-	\begin{frame}{Uses}
-		\begin{figure}
-			\includegraphics[scale=.45]{img/alexnet}
-			\caption{Cat}
-		\end{figure}
-		Hello, world!
-		Lies was in den Slides zu Präsentationen steht!
+	\begin{frame}{Introduction}
+	\begin{figure}
+		\includegraphics[scale=.4]{img/self_driving}
+		\caption{A self-driving car. \\Credit: 
+			\href{https://www.flickr.com/photos/chijs/21798665468/in/photolist-zdgRMN-HzGNh8-gTzd3u-o5Zrtr-dLznp8-rntpFL-FnbXbs-Hap7Do-9o1FrD-GE5zz3-G9tVGQ-GhD21n-eb2sof-cDdb3y-Gfm7Po-NZGQ3J-GEawvr-FSwEH9-Fnc15o-zhGLV-GbMR1r-FnnkQp-Gfm7CG-eE2tFc-GbMRjx-GbMSe8-9mUNbt-CJdtas}{Marc van der Chijs}
+			 / \href{https://creativecommons.org/licenses/by-nd/2.0/}{CC BY-ND 2.0}}
+	\end{figure}
 	\end{frame}
+	\begin{frame}{Introduction}
+		\begin{figure}
+			\includegraphics[scale=.25]{img/siri}
+			\caption{A digital assistant. \\Credit: 
+				\href{https://www.flickr.com/photos/65265630@N03/13989720008}{Kārlis Dambrāns} / \href{https://creativecommons.org/licenses/by/2.0/}{CC BY 2.0}}
+		\end{figure}
+	\end{frame}
+	%Jedes intelligente System benutzt neuronale Netze
+	\begin{frame}{Introduction}
+		\begin{figure}
+			\includegraphics[scale=.5]{img/ilsvrc}
+			\caption{Object detection in images. \\Credit: Lu et. al\footnote{''1-HKUST: Object Detection in {ILSVRC} 2014'',\textit{CoRR}, vol. abs/1409.6155, 2014}}
+				
+		\end{figure}
+	\end{frame}
+	\section*{Outline}
+	\begin{frame}{Outline}
+		\tableofcontents
+	\end{frame}
+	\section{The Perceptron}
+	\begin{frame}{Example Task}
+		\begin{itemize}
+			\item<1-> Predict whether an input image of a handwritten digit shows a zero or another digit
+		\end{itemize}
+	\end{frame}
+	\begin{frame}{MNIST Data Sample}
+		\begin{figure}
+			\includegraphics[scale=1.6]{img/mnist}
+			\caption{Examples from the {MNIST} database. \\Credit: 
+				\href{https://commons.wikimedia.org/wiki/File:MnistExamples.png}{Josef Steppan}
+				/ \href{https://creativecommons.org/licenses/by-sa/4.0/deed.en}{CC BY-SA 4.0}}
+		\end{figure}
+	\end{frame}
+	\begin{frame}{Example Task}
+		\begin{itemize}
+			\item <1-> Predict whether an input image of a handwritten digit shows a zero or another digit
+			\item <2-> The image is represented as a flattened vector of pixel intensities $\bm{x} \in \mathbb{R}^{784}$
+			\item <3-> The output should be $1$ if the image shows a zero, otherwise it should be $-1$
+		\end{itemize}
+	\end{frame}
+	\begin{frame}{Model Specification}
+		The perceptron accepts $n$ input values and computes an output value $\hat{y}$:
+		\begin{equation}
+			\begin{split}
+			\hat{y} &= \sign\left (\sum_{i=1}^{n} w_ix_i\right )\\
+			\equiv \hat{y} &= \sign(\bm{w}^\top\bm{x})
+			\end{split}
+		\end{equation}
+	\end{frame}
+	% Jedem Pixel wird ein Gewicht zugeordnet
+	
+	\section{Feedforward Neural Networks}
+	\subsection{Architecture}
+	\subsection{Mathematical formulation}
+	\section{Training Feedforward Neural Networks}
+	\subsection{Cost functions}
+	\subsection{Stochastic Gradient Descent}
+	\subsection{Back-propagation}
+	\section{Extensions}
+	
+	\begin{frame}[standout]
+	Thank you!
+	\end{frame}
+	
 \end{document}
