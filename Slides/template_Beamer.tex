@@ -7,6 +7,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{bm}
+\usepackage{pgfplots}
 
 \DeclareMathOperator{\sign}{sign}
 
@@ -63,8 +64,9 @@
 	\begin{frame}{Example Task}
 		\begin{itemize}
 			\item <1-> Predict whether an input image of a handwritten digit shows a zero or another digit
-			\item <2-> The image is represented as a flattened vector of pixel intensities $\bm{x} \in \mathbb{R}^{784}$
-			\item <3-> The output should be $1$ if the image shows a zero, otherwise it should be $-1$
+			\item <1-> The image is represented as a flattened vector of pixel intensities $\bm{x} \in \mathbb{R}^{784}$
+			\item <2-> The output should be $1$ if the image shows a zero, otherwise it should be $-1$
+			\item <3-> \textbf{Idea}: Assign a weight to every input pixel
 		\end{itemize}
 	\end{frame}
 	\begin{frame}{Model Specification}
@@ -77,8 +79,30 @@
 		\end{equation}
 	\end{frame}
 	% Jedem Pixel wird ein Gewicht zugeordnet
+	% z.B.: Mitte negativ, bei der 0 positiv
+	\begin{frame}{Visual Representation}
+		\begin{figure}
+			\input{fig/perceptron_fig}
+			\caption{A visual representation of the perceptron model.}
+		\end{figure}
+	\end{frame}
+	% Based on neuroscience
+	\begin{frame}{Shortcomings of the Perceptron}
+		\begin{figure}
+			\input{fig/xor_fig}			
+			\caption{The perceptron cannot learn the \textsc{xor} function since the data is not linearly separable.}
+		\end{figure}
+	\end{frame}
 	
 	\section{Feedforward Neural Networks}
+	
+	\begin{frame}{Networks of perceptron-like units}
+		\begin{itemize}
+			\item <1-> \textbf{Idea}: A combination of multiple perceptrons could make much better predictions
+			\item <2-> 
+		\end{itemize}
+	\end{frame}
+	% Angelehnt an Gehirn
 	\subsection{Architecture}
 	\subsection{Mathematical formulation}
 	\section{Training Feedforward Neural Networks}
