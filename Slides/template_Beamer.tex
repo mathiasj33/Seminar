@@ -74,7 +74,7 @@
 		\begin{equation}
 			\begin{split}
 			\hat{y} &= \sign\left (\sum_{i=1}^{n} w_ix_i\right )\\
-			\equiv \hat{y} &= \sign(\bm{w}^\top\bm{x})
+			\equiv \hat{y} &= \sign\left (\bm{w}^\top\bm{x}\right )
 			\end{split}
 		\end{equation}
 	\end{frame}
@@ -99,10 +99,54 @@
 	\begin{frame}{Networks of perceptron-like units}
 		\begin{itemize}
 			\item <1-> \textbf{Idea}: A combination of multiple perceptrons could make much better predictions
-			\item <2-> 
+			\item <2-> We arrange the perceptrons in layers
+			\item <3-> The input of a layer is the output of the previous layer
+			\item <4-> This network model is called \emph{feedforward neural network} or \emph{multilayer perceptron}
 		\end{itemize}
 	\end{frame}
 	% Angelehnt an Gehirn
+	
+	\begin{frame}{Visual Representation}
+		\begin{figure}
+			\input{fig/network_fig}
+			\caption{A three-layer feedforward neural network.}
+		\end{figure}
+	\end{frame}
+	
+	\begin{frame}{Neurons}
+		\begin{itemize}
+			\item <1-> In practice, we use a modified version of the perceptron as computing units
+			\item <2-> We add a scalar bias value to the output computation:
+			\begin{equation}
+				\hat{y} = \sign\left (\bm{w}^\top\bm{x} + b\right )
+			\end{equation}
+			\item <3-> We replace the $\sign$ function with a generic function $f$:
+			\begin{equation}
+				\hat{y} = f\left (\bm{w}^\top\bm{x} + b\right )
+			\end{equation}
+			\item <4> These modified perceptrons are often called \emph{neurons} or simply \emph{units}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Mathematical Formulation}
+		\begin{itemize}
+			\item <1-> We can specify a single neuron with a weight vector $\bm{w}$ and a bias value $b$
+			\item <2-> Since a neural network consists of multiple neurons in a layer, we need weight \emph{matrices} $\bm{W}^{(l)}$ and bias \emph{vectors} $\bm{b}^{(l)}$ to specify the parameters of a layer $l$
+			\item <3-> The weight $w_{ij}^{(l)}$  is the weight from the xx neuron in the xx layer to the xx neuron in the xx layer
+			\item <4-> The bias $b_i^{(l)}$ is the bias of the xx neuron in the xx layer
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}{Mathematical Formulation}
+		\begin{itemize}
+			\item <1-> The output at layer $l$ is then given by
+			\begin{equation}
+				\bm{a}^{(l)} = f^{(l)}\left(\bm{W}^{(l)\top}\bm{a}^{(l-1)}+\bm{b}^{(l)}\right)
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+	% TODO: überall left mit den Klammer machen
+	
 	\subsection{Architecture}
 	\subsection{Mathematical formulation}
 	\section{Training Feedforward Neural Networks}
