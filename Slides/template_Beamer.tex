@@ -22,7 +22,7 @@
 \setbeamertemplate{section in toc}{\inserttocsectionnumber.~\inserttocsection}
 
 \title{Fundamentals of Neural Networks}
-\date{\today}
+\date{June 12, 2018}
 \author{Mathias Jackermeier}
 \institute{Technische Universität München}
 \begin{document}
@@ -43,8 +43,6 @@
 		\end{figure}
 		\note{Jedes intelligente System benutzt neuronale Netze}
 	\end{frame}
-	\section{Outline}
-	\note{Überblick, nicht ins mathematische Detail}
 	\section{The Perceptron}
 	\begin{frame}{Example Task}
 		\begin{itemize}
@@ -103,14 +101,15 @@
 		\end{itemize}
 		\note{f: Aktivierungsfunktion}
 	\end{frame}
-	\begin{frame}{Shortcomings of the Perceptron}
-		\begin{figure}
-			\input{fig/xor_fig}			
-			\caption{The perceptron cannot learn the \textsc{xor} function since the data is not linearly separable.}
-		\end{figure}
-	\end{frame}
+%	\begin{frame}{Shortcomings of the Perceptron}
+%		\begin{figure}
+%			\input{fig/xor_fig}			
+%			\caption{The perceptron cannot learn the \textsc{xor} function since the data is not linearly separable.}
+%		\end{figure}
+%	\end{frame}
 	
 	\section{Feedforward Neural Networks}
+	\note{Perzeptron linear: Viele Funktionen können nicht gelernt werden}
 	
 	\begin{frame}{Networks of neurons}
 		\begin{itemize}
@@ -182,18 +181,13 @@
 			\item <1-> Experimentation and trial \& error
 		\end{itemize}
 	\end{frame}
-	\begin{frame}{Input Layer}
-		\begin{itemize}
-			\item <1-> Choose an appropriate input representation
-		\end{itemize}
-	\end{frame}
 	\begin{frame}{Mathematical Formulation}
 		\begin{itemize}
 			\item <1-> We can specify a single neuron with a weight vector $\bm{w}$ and a bias value $b$
 			\item <2-> Since a neural network consists of multiple neurons in a layer, we need weight \emph{matrices} $\bm{W}^{(l)}$ and bias \emph{vectors} $\bm{b}^{(l)}$ to specify the parameters of a layer $l$
-			\item <3-> The weight $w_{ij}^{(l)}$  is the weight from the \nth{i} neuron in the \nth{(l-1)} layer to the \nth{j} neuron in the \nth{l} layer
-			\item <4-> The bias $b_i^{(l)}$ is the bias of the \nth{i} neuron in the \nth{l} layer
-			\item <5-> $f^{(l)}$ is the activation function used in the \nth{l} layer
+%			\item <3-> The weight $w_{ij}^{(l)}$  is the weight from the \nth{i} neuron in the \nth{(l-1)} layer to the \nth{j} neuron in the \nth{l} layer
+%			\item <4-> The bias $b_i^{(l)}$ is the bias of the \nth{i} neuron in the \nth{l} layer
+			\item <3-> $f^{(l)}$ is the activation function used in the \nth{l} layer
 		\end{itemize}
 		\note{f wird komponentenweise angewendet}
 	\end{frame}
@@ -202,10 +196,6 @@
 			\item <1-> The output at layer $l$ is then given by
 			\begin{equation}
 				\bm{a}^{(l)} = f^{(l)}\left(\bm{W}^{(l)\top}\bm{a}^{(l-1)}+\bm{b}^{(l)}\right)
-			\end{equation}
-			\item <2-> The vector of weighted inputs is similarly defined as
-			\begin{equation}
-			\bm{z}^{(l)} = \bm{W}^{(l)\top}\bm{a}^{(l-1)}+\bm{b}^{(l)}
 			\end{equation}
 		\end{itemize}
 		\note{$a^0 = x$\\$\hat{y} = a^L$}
@@ -256,7 +246,7 @@
 			\loss(\bm{x}, \bm{y}, \bm{\theta}) = -\ln \hat{y}_i
 			\end{equation}
 		\end{itemize}
-		\note{Label: one-hot\\i-te Klasse\\Maximum Likelihood Estimation}
+		\note{Label: i-te Klasse\\Maximum Likelihood Estimation}
 	\end{frame}
 	\begin{frame}{Stochastic Gradient Descent}
 		\begin{itemize}
@@ -271,7 +261,7 @@
 			\end{equation}
 			\item <4-> \emph{Stochastic} Gradient Descent computes only an approximation of the gradient
 		\end{itemize}
-		\note{$\Rightarrow$ Kleine Änderungen in die entgegengesetze Richtung des Gradienten\\Learning Rate nicht zu klein und nicht zu groß\\Erweiterungen}
+		\note{$\Rightarrow$ Kleine Änderungen in die entgegengesetze Richtung des Gradienten\\Learning Rate Hyperparameter durch rumexperimentieren\\Erweiterungen}
 	\end{frame}
 	\begin{frame}{Stochastic Gradient Descent}
 		\begin{figure}
@@ -298,10 +288,11 @@
 	\begin{frame}{The Complete Learning Algorithm}
 		\begin{enumerate}
 			\item <1-> Propagate all training examples of a minibatch forward through the network
-			\item <2-> Compute all gradients using back-propagation
-			\item <3-> Compute the average gradient
-			\item <4-> Update the parameters in the negative direction of the gradient
-			\item <5-> Repeat until the cost is low enough
+			\item <2-> Compute the cost for each training example
+			\item <3-> Compute all gradients using back-propagation
+			\item <4-> Compute the average gradient
+			\item <5-> Update the parameters in the negative direction of the gradient
+			\item <6-> Repeat until the cost is low enough
 		\end{enumerate}
 	\end{frame}
 	
