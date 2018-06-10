@@ -10,7 +10,7 @@
 \usepackage{pgfplots}
 
 \usepackage{pgfpages}
-%\setbeameroption{show notes on second screen}
+\setbeameroption{show notes on second screen}
 
 \newcommand{\nth}[1]{$#1^\text{th}$}
 
@@ -34,7 +34,6 @@
 			\href{https://www.flickr.com/photos/chijs/21798665468/in/photolist-zdgRMN-HzGNh8-gTzd3u-o5Zrtr-dLznp8-rntpFL-FnbXbs-Hap7Do-9o1FrD-GE5zz3-G9tVGQ-GhD21n-eb2sof-cDdb3y-Gfm7Po-NZGQ3J-GEawvr-FSwEH9-Fnc15o-zhGLV-GbMR1r-FnnkQp-Gfm7CG-eE2tFc-GbMRjx-GbMSe8-9mUNbt-CJdtas}{Marc van der Chijs}
 			 / \href{https://creativecommons.org/licenses/by-nd/2.0/}{CC BY-ND 2.0}}
 	\end{figure}
-	\note{Test}
 	\end{frame}
 	\begin{frame}{Introduction}
 		\begin{figure}
@@ -42,10 +41,10 @@
 			\caption{A digital assistant. \\Credit: 
 				\href{https://www.flickr.com/photos/65265630@N03/13989720008}{Kārlis Dambrāns} / \href{https://creativecommons.org/licenses/by/2.0/}{CC BY 2.0}}
 		\end{figure}
+		\note{Jedes intelligente System benutzt neuronale Netze}
 	\end{frame}
-	%Jedes intelligente System benutzt neuronale Netze
 	\section{Outline}
-	% Wichtig neuronale Netze auch mathematisch zu verstehen
+	\note{Überblick, nicht ins mathematische Detail}
 	\section{The Perceptron}
 	\begin{frame}{Example Task}
 		\begin{itemize}
@@ -77,15 +76,14 @@
 			\end{split}
 		\end{equation}
 	\end{frame}
-	% Jedem Pixel wird ein Gewicht zugeordnet
-	% z.B.: Mitte negativ, bei der 0 positiv
 	\begin{frame}{Visual Representation}
 		\begin{figure}
 			\input{fig/perceptron_fig}
 			\caption{A visual representation of the perceptron model.}
 		\end{figure}
+		\note{1950\\}
+		\note{Neuron im Gehirn: Nervenzelle Eingaben Ausgaben}
 	\end{frame}
-	% Based on neuroscience
 	\begin{frame}{Generalizations}
 		\begin{itemize}
 			\item <1-> The perceptron is often used in a modified form
@@ -103,8 +101,8 @@
 			z = \bm{w}^\top\bm{x} + b
 			\end{equation}
 		\end{itemize}
+		\note{f: Aktivierungsfunktion}
 	\end{frame}
-	% activation function
 	\begin{frame}{Shortcomings of the Perceptron}
 		\begin{figure}
 			\input{fig/xor_fig}			
@@ -120,17 +118,15 @@
 			\item <2-> A feedforward neural network is a layered architecture of neurons
 			\item <3-> The input of a layer is the output of the previous layer
 		\end{itemize}
+		\note{Angelehnt an Gehirn\\Auch Multilayer Perzeptron}
 	\end{frame}
-	% Angelehnt an Gehirn
-	% Auch multilayer perceptron
 	\begin{frame}{Visual Representation}
 		\begin{figure}
 			\input{fig/network_fig}
 			\caption{A three-layer feedforward neural network.}
 		\end{figure}
+		\note{Tiefe\\Verbindungen nur zwischen Layers}
 	\end{frame}
-	% depth
-	% connections
 	\begin{frame}{Output Layer}
 		\begin{itemize}
 			\item <1-> The design of the output layer depends on the task that we wish to perform
@@ -138,7 +134,6 @@
 			\item <3-> \emph{Binary classification}: one single sigmoid neuron
 		\end{itemize}
 	\end{frame}
-	% boston housing
 	\begin{frame}{The Logistic Sigmoid Function}
 		\begin{figure}
 			\begin{center}
@@ -158,9 +153,8 @@
 			\softmax(x) = \frac{\exp(x)}{\sum_{i=1}^{k}\exp(z_i)}
 			\end{equation}
 		\end{itemize}
+		\note{softmax: Generalisierung, normalisiert\\Viele andere Probleme: Auffälliges Verhalten, Bildgenerierung}
 	\end{frame}
-	% generalization of logistic sigmoid
-	% many other tasks: structured output, anomaly, synthesis, ...
 	\begin{frame}{Hidden Layers}
 		\begin{itemize}
 			\item <1-> The task does not give us any information about how to design the hidden layers
@@ -168,10 +162,8 @@
 			\item <3-> Deep networks perform almost always better in practice
 			\item <4-> Activation function: Three common choices are the logistic sigmoid, the $\tanh$, and the rectified linear function
 		\end{itemize}
+		\note{Daher kommt Deep Learning\\Verschiedene Repräsentationen (Kanten, Objekte,...) $\Rightarrow$ Abstraktionen!\\Kontinuierlich, nicht linear!}
 	\end{frame}
-	% Deep Learning
-	% Representations, abstraction
-	% continuous, non-linear -> this is where the magic happens
 	\begin{frame}{The Rectified Linear Function}
 		\begin{figure}
 			\begin{center}
@@ -203,8 +195,8 @@
 			\item <4-> The bias $b_i^{(l)}$ is the bias of the \nth{i} neuron in the \nth{l} layer
 			\item <5-> $f^{(l)}$ is the activation function used in the \nth{l} layer
 		\end{itemize}
+		\note{f wird komponentenweise angewendet}
 	\end{frame}
-	%elementwise
 	\begin{frame}{Mathematical Formulation}
 		\begin{itemize}
 			\item <1-> The output at layer $l$ is then given by
@@ -216,9 +208,8 @@
 			\bm{z}^{(l)} = \bm{W}^{(l)\top}\bm{a}^{(l-1)}+\bm{b}^{(l)}
 			\end{equation}
 		\end{itemize}
+		\note{$a^0 = x$\\$\hat{y} = a^L$}
 	\end{frame}
-	% a0 = x
-	%y hat
 	
 	\section{Training Feedforward Neural Networks}
 	\begin{frame}{Training Scenario}
@@ -227,8 +218,8 @@
 			\item <2-> We want to learn a mapping from $\mathbb{X}$ to $\mathbb{Y}$
 			\item <3-> \textbf{Idea}: Iteratively adjust the parameters of the neural network
 		\end{itemize}
+		\note{Zufällig initialisiert}
 	\end{frame}
-	% zufällig initialisiert
 	\begin{frame}{Cost Functions}
 		\begin{itemize}
 			\item <1-> The cost function $J(\bm{\theta})$ is a measure of how good the network performs
@@ -238,9 +229,8 @@
 			J(\bm{\theta}) = \frac1{m}\sum_{i=1}^{m}\loss(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta})
 			\end{equation}
 		\end{itemize}
+		\note{Von den Parametern zu einem Skalar\\Größer als 0\\Auch Loss oder Error}
 	\end{frame}
-	% auch loss oder error
-	% scalar, größer als 0
 	\begin{frame}{Mean squared error}
 		\begin{itemize}
 			\item <1-> In regression, the per-example loss is commonly
@@ -248,10 +238,8 @@
 			\loss(\bm{x}, y, \bm{\theta}) = \frac1{2}(\hat{y}-y)^2
 			\end{equation}
 		\end{itemize}
+		\note{Label: Skalar was wir vorhersagen wollen\\Distanz\\Erfüllt Bedingungen}
 	\end{frame}
-	%label: scalar value
-	%distance
-	%valid cost
 	\begin{frame}{Cross-entropy}
 		\begin{itemize}
 			\item <1-> In binary classification, we often use the cross-entropy loss
@@ -259,9 +247,8 @@
 			\loss(\bm{x}, y, \bm{\theta}) = -y \ln \hat{y} - (1-y)\ln(1-\hat{y})
 			\end{equation}
 		\end{itemize}
+		\note{MSE schlecht in Klassifikation\\Label: 1 oder 0}
 	\end{frame}
-	%mse schlecht in klassifikation
-	%label: 1 oder 0
 	\begin{frame}{Cross-entropy}
 		\begin{itemize}
 			\item <1-> In multiclass classification, the cross-entropy becomes
@@ -269,10 +256,8 @@
 			\loss(\bm{x}, \bm{y}, \bm{\theta}) = -\ln \hat{y}_i
 			\end{equation}
 		\end{itemize}
+		\note{Label: one-hot\\i-te Klasse\\Maximum Likelihood Estimation}
 	\end{frame}
-	%label: one-hot
-	%i-th class
-	%mle kurz erwähnen
 	\begin{frame}{Stochastic Gradient Descent}
 		\begin{itemize}
 			\item <1-> (Stochastic) Gradient Descent is the most common algorithm to minimize cost functions in neural networks
@@ -284,7 +269,9 @@
 			\begin{equation}
 			\Delta\bm{\theta} = -\eta\nabla J(\bm{\theta}),
 			\end{equation}
+			\item <4-> \emph{Stochastic} Gradient Descent computes only an approximation of the gradient
 		\end{itemize}
+		\note{$\Rightarrow$ Kleine Änderungen in die entgegengesetze Richtung des Gradienten\\Learning Rate nicht zu klein und nicht zu groß\\Erweiterungen}
 	\end{frame}
 	\begin{frame}{Stochastic Gradient Descent}
 		\begin{figure}
@@ -295,6 +282,12 @@
 		\end{figure}
 	\end{frame}
 	\begin{frame}{Back-propagation}
+		\begin{itemize}
+			\item <1-> The back-propagation algorithm efficiently computes the gradient of the cost function
+			\item <2-> It can be derived by recursively applying the chain rule to the layers of the neural network, beginning with the output layer
+		\end{itemize}
+	\end{frame}
+	\begin{frame}{Back-propagation}
 		\begin{figure}
 			\begin{center}
 				\input{fig/backprop}
@@ -302,9 +295,20 @@
 			\caption{The Back-propagation algorithm.}
 		\end{figure}
 	\end{frame}
+	\begin{frame}{The Complete Learning Algorithm}
+		\begin{enumerate}
+			\item <1-> Propagate all training examples of a minibatch forward through the network
+			\item <2-> Compute all gradients using back-propagation
+			\item <3-> Compute the average gradient
+			\item <4-> Update the parameters in the negative direction of the gradient
+			\item <5-> Repeat until the cost is low enough
+		\end{enumerate}
+	\end{frame}
 	
+	\section{Conclusion}
+	\note{Komplexe Netzwerke einfacher Einheiten\\Abstraktionen\\Lernen: Kleine Updates der Parameter so dass das Netzwerk besser wird\\Überall in Deep Learning\\Viele weitere Anwendungen in der Zukunft}
 	\begin{frame}[standout]
-	Thank you!
+		Thank you!
 	\end{frame}
 	
 \end{document}
