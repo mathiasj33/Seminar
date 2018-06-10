@@ -36,17 +36,7 @@
 		\end{figure}
 	\end{frame}
 	%Jedes intelligente System benutzt neuronale Netze
-	\begin{frame}{Introduction}
-		\begin{figure}
-			\includegraphics[scale=.5]{img/ilsvrc}
-			\caption{Object detection in images. \\Credit: Lu et. al\footnote{''1-HKUST: Object Detection in {ILSVRC} 2014'',\textit{CoRR}, vol. abs/1409.6155, 2014}}
-				
-		\end{figure}
-	\end{frame}
-	\section*{Outline}
-	\begin{frame}{Outline}
-		\tableofcontents
-	\end{frame}
+	\section{Outline}
 	\section{The Perceptron}
 	\begin{frame}{Example Task}
 		\begin{itemize}
@@ -87,6 +77,20 @@
 		\end{figure}
 	\end{frame}
 	% Based on neuroscience
+	\begin{frame}{Generalizations}
+		\begin{itemize}
+			\item <1-> The perceptron is often used in a modified form
+			\item <2-> A scalar bias value can be added to the output computation:
+			\begin{equation}
+			\hat{y} = \sign\left (\bm{w}^\top\bm{x} + b\right )
+			\end{equation}
+			\item <3-> The $\sign$ function can be replaced with a generic function $f$:
+			\begin{equation}
+			\hat{y} = f\left (\bm{w}^\top\bm{x} + b\right )
+			\end{equation}
+			\item <4> These modified perceptrons are often called \emph{neurons} or simply \emph{units}
+		\end{itemize}
+	\end{frame}
 	\begin{frame}{Shortcomings of the Perceptron}
 		\begin{figure}
 			\input{fig/xor_fig}			
@@ -111,21 +115,6 @@
 			\input{fig/network_fig}
 			\caption{A three-layer feedforward neural network.}
 		\end{figure}
-	\end{frame}
-	
-	\begin{frame}{Neurons}
-		\begin{itemize}
-			\item <1-> In practice, we use a modified version of the perceptron as computing units
-			\item <2-> We add a scalar bias value to the output computation:
-			\begin{equation}
-				\hat{y} = \sign\left (\bm{w}^\top\bm{x} + b\right )
-			\end{equation}
-			\item <3-> We replace the $\sign$ function with a generic function $f$:
-			\begin{equation}
-				\hat{y} = f\left (\bm{w}^\top\bm{x} + b\right )
-			\end{equation}
-			\item <4> These modified perceptrons are often called \emph{neurons} or simply \emph{units}
-		\end{itemize}
 	\end{frame}
 	
 	\begin{frame}{Mathematical Formulation}
