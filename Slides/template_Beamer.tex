@@ -27,6 +27,7 @@
 \institute{Technische Universität München}
 \begin{document}
 	\maketitle
+	\note{Zeitung $\Rightarrow$ Künstliche Intelligenz, Gedichte schreiben SZ $\Rightarrow$ Deep Learning}
 	\begin{frame}{Introduction}
 	\begin{figure}
 		\includegraphics[scale=.4]{img/self_driving}
@@ -44,11 +45,6 @@
 		\note{Jedes intelligente System benutzt neuronale Netze}
 	\end{frame}
 	\section{The Perceptron}
-	\begin{frame}{Example Task}
-		\begin{itemize}
-			\item<1-> Predict whether an input image of a handwritten digit shows a zero or another digit
-		\end{itemize}
-	\end{frame}
 	\begin{frame}{MNIST Data Sample}
 		\begin{figure}
 			\includegraphics[scale=1.6]{img/mnist}
@@ -60,9 +56,9 @@
 	\begin{frame}{Example Task}
 		\begin{itemize}
 			\item <1-> Predict whether an input image of a handwritten digit shows a zero or another digit
-			\item <1-> The image is represented as a flattened vector of pixel intensities $\bm{x} \in \mathbb{R}^{784}$
-			\item <2-> The output should be $1$ if the image shows a zero, otherwise it should be $-1$
-			\item <3-> \textbf{Idea}: Assign a weight to every input pixel
+			\item <2-> The image is represented as a flattened vector of pixel intensities $\bm{x} \in \mathbb{R}^{784}$
+			\item <3-> The output should be $1$ if the image shows a zero, otherwise it should be $-1$
+			\item <4-> \textbf{Idea}: Assign a weight to every input pixel
 		\end{itemize}
 	\end{frame}
 	\begin{frame}{Model Specification}
@@ -115,7 +111,6 @@
 		\begin{itemize}
 			\item <1-> \textbf{Idea}: A combination of multiple neurons could make much better predictions
 			\item <2-> A feedforward neural network is a layered architecture of neurons
-			\item <3-> The input of a layer is the output of the previous layer
 		\end{itemize}
 		\note{Angelehnt an Gehirn\\Auch Multilayer Perzeptron}
 	\end{frame}
@@ -198,7 +193,7 @@
 				\bm{a}^{(l)} = f^{(l)}\left(\bm{W}^{(l)\top}\bm{a}^{(l-1)}+\bm{b}^{(l)}\right)
 			\end{equation}
 		\end{itemize}
-		\note{$a^0 = x$\\$\hat{y} = a^L$}
+		\note{Neue Perspektive\\$a^0 = x$\\$\hat{y} = a^L$}
 	\end{frame}
 	
 	\section{Training Feedforward Neural Networks}
@@ -237,7 +232,7 @@
 			\loss(\bm{x}, y, \bm{\theta}) = -y \ln \hat{y} - (1-y)\ln(1-\hat{y})
 			\end{equation}
 		\end{itemize}
-		\note{MSE schlecht in Klassifikation\\Label: 1 oder 0}
+		\note{MSE schlecht in Klassifikation\\Label: 1 oder 0\\$-\ln$ aufzeichnen!}
 	\end{frame}
 	\begin{frame}{Cross-entropy}
 		\begin{itemize}
@@ -301,5 +296,6 @@
 	\begin{frame}[standout]
 		Thank you!
 	\end{frame}
+	\note{Fragen?}
 	
 \end{document}
