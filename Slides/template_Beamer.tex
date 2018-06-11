@@ -27,7 +27,7 @@
 \institute{Technische Universität München}
 \begin{document}
 	\maketitle
-	\note{Zeitung $\Rightarrow$ Künstliche Intelligenz, Gedichte schreiben SZ $\Rightarrow$ Deep Learning}
+	\note{In den letzten Jahren Fortschritt in Künstlicher Intelligenz}
 	\begin{frame}{Introduction}
 	\begin{figure}
 		\includegraphics[scale=.4]{img/self_driving}
@@ -44,6 +44,7 @@
 		\end{figure}
 		\note{Jedes intelligente System benutzt neuronale Netze}
 	\end{frame}
+	\section{Outline}
 	\section{The Perceptron}
 	\begin{frame}{MNIST Data Sample}
 		\begin{figure}
@@ -60,6 +61,7 @@
 			\item <3-> The output should be $1$ if the image shows a zero, otherwise it should be $-1$
 			\item <4-> \textbf{Idea}: Assign a weight to every input pixel
 		\end{itemize}
+		\note{z.B. negative Gewichte in der Mitte}
 	\end{frame}
 	\begin{frame}{Model Specification}
 		The perceptron accepts $n$ input values and computes an output value $\hat{y}$:
@@ -119,7 +121,7 @@
 			\input{fig/network_fig}
 			\caption{A three-layer feedforward neural network.}
 		\end{figure}
-		\note{Tiefe\\Verbindungen nur zwischen Layers}
+		\note{Tiefe\\Verbindungen nur zwischen Layers\\Ein Input wird durchpropagiert}
 	\end{frame}
 	\begin{frame}{Output Layer}
 		\begin{itemize}
@@ -133,7 +135,7 @@
 			\begin{center}
 				\input{fig/sigmoid_fig}
 			\end{center}
-			\caption{The logistic sigmoid function $\sigma(x) = \frac1{1+\exp(-x)}$}
+			\caption{The logistic sigmoid function $\sigma(x) = \frac1{1+\exp(-x)}$.}
 			\label{fig:sigmoid}
 		\end{figure}
 	\end{frame}
@@ -163,7 +165,7 @@
 			\begin{center}
 				\input{fig/relu_fig}
 			\end{center}
-			\caption{The rectified linear function $g(x) = \max\{0,x\}$}
+			\caption{The rectified linear function $g(x) = \max\{0,x\}$.}
 			\label{fig:sigmoid}
 		\end{figure}
 	\end{frame}
@@ -246,15 +248,11 @@
 	\begin{frame}{Stochastic Gradient Descent}
 		\begin{itemize}
 			\item <1-> (Stochastic) Gradient Descent is the most common algorithm to minimize cost functions in neural networks
-			\item <2-> A change $\Delta \bm{\theta}$ in the parameters corresponds roughly to the change
+			\item <2-> To minimize $J(\bm{\theta})$, make small updates in the negative direction of the gradient:
 			\begin{equation}
-			\Delta J(\bm{\theta}) \approx \nabla J(\bm{\theta})^{\top}\Delta\bm{\theta}
+			\Delta\bm{\theta} = -\eta\nabla J(\bm{\theta})
 			\end{equation}
-			\item <3-> To minimize $J(\bm{\theta})$, choose
-			\begin{equation}
-			\Delta\bm{\theta} = -\eta\nabla J(\bm{\theta}),
-			\end{equation}
-			\item <4-> \emph{Stochastic} Gradient Descent computes only an approximation of the gradient
+			\item <3-> \emph{Stochastic} Gradient Descent computes only an approximation of the gradient
 		\end{itemize}
 		\note{$\Rightarrow$ Kleine Änderungen in die entgegengesetze Richtung des Gradienten\\Learning Rate Hyperparameter durch rumexperimentieren\\Erweiterungen}
 	\end{frame}

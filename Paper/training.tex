@@ -131,7 +131,7 @@ which is easily expressed in matrix notation:
 
 These expressions allow for a very efficient computation of the gradient. First, we propagate the input vector of a particular training example forward through the network to obtain the output $\hat{\bm{y}}$. From this, we can calculate the cost $J(\bm{\theta})$ and the error $\bm{\delta}^{(L)}$ in the output layer. With Eq. \eqref{eq:bp3}, the error is then propagated backwards through the hidden layers, where we can easily compute the derivatives using Eq. \eqref{eq:bp1} and \eqref{eq:bp2}.
 
-Combining back-propagation with stochastic gradient descent yields the complete learning algorithm for feedforward neural networks, which is formalized in algorithm \ref{alg:learning} \cite[Ch.\,6,\,pp.\,205-206]{DBLP:books/daglib/0040158}.
+Combining back-propagation with stochastic gradient descent yields the complete learning algorithm for feedforward neural networks, which is formalized in algorithm \ref{alg:learning} \cite[Ch.\,2]{Nielsen2015},\cite[Ch.\,6,\,pp.\,205-206]{DBLP:books/daglib/0040158}.
 
 \begin{algorithm}
 	\caption{The learning algorithm for feedforward neural networks. The algorithm computes one stochastic gradient descent update, given a minibatch $\mathbb{B}$.}
