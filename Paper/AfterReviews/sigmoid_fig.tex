@@ -1,0 +1,10 @@
+% !TeX root = dm-template.tex
+
+% restrict y to domain=-1:1, x=1cm
+\begin{tikzpicture}[scale=.9]
+	\begin{axis}[axis lines = left,xlabel = $x$, ylabel = {$\sigma(x)$}, ymin=-0.05, ymax=1.05]
+		\addplot [domain=-6:6, samples=200, color=blue, style=semithick]
+		{1/(1+exp(-x))};
+		%\addlegendentry{$\sigma(x) = 1/\exp(-x)$}
+	\end{axis}
+\end{tikzpicture}

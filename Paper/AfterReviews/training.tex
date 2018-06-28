@@ -1,0 +1,168 @@
+\section{Training Feedforward Neural Networks}
+\label{sec:training}
+Similar to the perceptron model, when training neural networks, we have a list of $m$ training examples $\mathbb{X} = (\bm{x}^{(1)}, \ldots, \bm{x}^{(m)})$ with corresponding labels $\mathbb{Y}$, and wish to iteratively adjust the parameters $\bm{\theta}$ of the neural network to learn a mapping from $\mathbb{X}$ to $\mathbb{Y}$. The parameters are usually randomly initialized.
+
+In a binary classification setting, the labels $y^{(i)}$ are either 0 or 1 to indicate one of the two classes. In multiclass problems, they encode one of $k$ classes in a \emph{one-hot} fashion: in this case, $\bm{y}^{(i)}$ is a $k$-dimensional vector whose \nth{i} entry is 1 if $\bm{y}^{(i)}$ represents the \nth{i} class. All other entries are equal to 0. Finally, in regression, the labels are simply the values that we want to predict.
+
+Suppose we are given such a set of training data and a neural network $f(\bm{\theta})$. In this section, we explore how we can choose $\bm{\theta}$ in order that the network learns the mapping described by the training data, mainly utilizing concepts presented in Ref. \cite{DBLP:books/daglib/0040158} and \cite{Nielsen2015}.
+
+We will focus on gradient-based learning, which is the most common method employed in neural networks. Other algorithms, such as genetic algorithms, are also used in special scenarios \cite{DBLP:conf/ijcai/MontanaD89}, but they are beyond the scope of this paper.
+
+\subsection{Cost functions}
+In order to improve the parameters $\bm{\theta}$, we first need some kind of measure of how good the network performs with those particular parameters. For this, we introduce the \emph{cost function} $J(\bm{\theta})$, sometimes also referred to as \emph{loss} or \emph{error} function. $J(\bm{\theta})$ produces a scalar cost with two properties: it is non-negative and the closer it is to 0, the better our network performs. We can thus reframe the training problem as \emph{minimizing the cost function}.
+
+The cost functions that we will consider can all be represented as sums over the costs of the individual training examples:
+\begin{equation}
+J(\bm{\theta}) = \frac1{m}\sum_{i=1}^{m}\loss(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}),
+\end{equation}
+where $\loss$ is the loss for an individual training example. We scale $J$ by $1/m$ to make the cost independent of the number of training examples $m$.
+
+The particular per-example cost function $\loss$ is chosen based on the task that we wish to perform:
+
+In regression, a good choice is the \emph{mean squared error}
+\begin{equation}
+\loss(\bm{x}, y, \bm{\theta}) = \frac1{2}(\hat{y}-y)^2,
+\end{equation}
+which simply corresponds to the distance of the desired output $y$ from the actual output $\hat{y}$. It can easily be seen that it satisfies the properties of a cost function: it is always non-negative and if $\hat{y}$ is similar to $y$, then $(\hat{y}-y)^2/2 \approx 0$.
+
+The mean squared error is also a valid cost function in  binary classification problems. However, it has some undesirable properties that can make training difficult in this setting. In particular, the gradient of the mean squared error can become very small in combination with sigmoid neurons, which causes the network to only learn slowly as we will see later in this section \cite[Ch.\,6,\,p.\,178]{DBLP:books/daglib/0040158}. Hence, a different cost function, called the \emph{cross-entropy}, is commonly chosen. The cross-entropy loss is defined as
+\begin{equation}
+\loss(\bm{x}, y, \bm{\theta}) = -y \ln \hat{y} - (1-y)\ln(1-\hat{y}).
+\end{equation}
+We observe that, if $y=1$, the loss simply becomes $-\ln\hat{y}$, which is large if $\hat{y}$ is close to 0, and small if $\hat{y}$ is close to 1. A similar analysis can be conducted for the case $y=0$ and we can see that this cost function also satisfies the desired properties.
+
+In case of multiclass classification, the cross-entropy becomes
+\begin{equation}
+\loss(\bm{x}, \bm{y}, \bm{\theta}) = -\ln \hat{y}_i
+\end{equation}
+if $\bm{y}$ represents the \nth{i} class (i.e. the \nth{i} position in the vector $\bm{y}$ is 1). Similar arguments as in the case of binary classification apply as to why this is a valid cost function.
+
+While these functions might seem rather different, they can all be derived with the same principle, called \emph{maximum likelihood estimation} (MLE) \cite[Ch.\,5,\,pp.\,128-131]{DBLP:books/daglib/0040158}. This estimation comes from a probabilistic perspective and interprets the training data as samples drawn from an unknown probability distribution $P(\mathbb{Y}\given\mathbb{X})$. From this perspective, the goal of training is to choose parameters $\bm{\theta}$ such that the probability distribution $P_{\text{model}}(\mathbb{Y}\given\mathbb{X}; \bm{\theta})$ described by the model matches the true distribution as closely as possible. The MLE states that we should choose the parameters that maximize $P_{\text{model}}$, i.e. the optimal parameters $\hat{\bm{\theta}}$ are
+\begin{equation}
+\hat{\bm{\theta}} = \argmax_{\bm{\theta}} P_{\text{model}}(\mathbb{Y}\given\mathbb{X}; \bm{\theta}).
+\end{equation}
+
+We obtain the mean squared error from the MLE if we regard the true probability distribution of the data as a Gaussian distribution. In the case of binary and multiclass classification, we regard the true probability distribution as a Bernoulli or Multinoulli distribution, respectively \cite[Ch.\,6,\,pp.\,175-185]{DBLP:books/daglib/0040158}.
+
+\subsection{Stochastic Gradient Descent}
+Minimizing cost functions is similar to any other minimization problem. A variety of algorithms exist to minimize functions, but stochastic gradient descent, an extension of gradient descent, is particularly dominant in neural network training, because it is rather efficient and yields good results.
+
+As the name suggests, gradient descent makes use of the gradient of the cost function to iteratively improve the parameters to decrease the cost. In particular, we know from calculus that a small change $\Delta\bm{\theta}$ in $\bm{\theta}$ corresponds roughly to the change
+\begin{equation}
+\Delta J(\bm{\theta}) \approx \nabla J(\bm{\theta})^{\top}\Delta\bm{\theta}
+\end{equation}
+in $J(\bm{\theta})$. It can be shown that the choice of $\Delta\bm{\theta}$ which decreases the cost the fastest and thus minimizes $\Delta J(\bm{\theta})$ is
+\begin{equation}
+\Delta\bm{\theta} = -\eta\nabla J(\bm{\theta}),
+\end{equation}
+where $\eta$ is the \emph{learning rate} \cite[Ch.\,4,\,p.\,82]{DBLP:books/daglib/0040158}. This means that we can improve a neural network by making small changes to the parameters in the negative direction of the gradient of the cost function.
+
+The learning rate $\eta$ controls the size of the update steps performed by gradient descent. It should neither be too small, nor too large: if it is small, the model only learns very slowly, and if it is large, we risk making updates that unintentionally increase the loss, since the gradient is only an approximation of the real cost function.
+
+The problem with using gradient descent to train neural networks is that computing the gradient is linear in the number of training examples $m$. To see this, note that
+\begin{equation}
+\nabla J(\bm{\theta}) = \frac1{m}\sum_{i=1}^{m}\nabla \loss(\bm{x}^{(i)},\bm{y}^{(i)},\bm{\theta}).
+\end{equation}
+\emph{Stochastic} gradient descent resolves this dependency by computing an approximation of the gradient by averaging over only a subset of training examples with corresponding labels $\mathbb{B}$ called a \emph{minibatch}. The gradient computation becomes
+\begin{equation}
+\nabla J(\bm{\theta}) = \frac1{|\mathbb{B}|}\sum_{(\bm{x},\bm{y})\in\mathbb{B}}\nabla \loss(\bm{x},\bm{y},\bm{\theta}),
+\end{equation}
+which is independent of $m$. The size $|\mathbb{B}|$ of the minibatches is not increased with the amount of training data.
+
+Many variations of stochastic gradient descent exist. They usually make use of higher order derivatives or approximations thereof and dynamically adjust the learning rate \cite{DBLP:journals/corr/Ruder16}.
+
+\subsection{The Back-propagation Algorithm}
+An efficient way of computing the gradient of the cost function is the back-propagation algorithm \cite{Rumelhart1986533}. Beginning from the output layer, the algorithm computes the partial derivatives of all the weights and biases up to the first hidden layer. In the remainder of this section, we derive this procedure mathematically and show how it can be used in combination with stochastic gradient descent to train feedforward neural networks. The derivation we present is closely based on Ref. \cite[Ch.\,2]{Nielsen2015}.
+
+The ultimate goal of the algorithm is to compute the partial derivatives $\partial J/\partial w_{ij}^{(l)}$ and $\partial J/\partial b_j^{(l)}$. To achieve this, we introduce the intermediate quantity
+\begin{equation}
+\delta_j^{(l)} = \frac{\partial J}{\partial z_j^{(l)}},
+\end{equation}
+which is a measure of the error in the \nth{j} neuron of the \nth{l} layer: if $\delta_j^{(l)}$ is large, changing the parameters of this neuron can decrease the cost considerably, and if it is small, the neuron is already near-optimal. The error is closely related to the quantities of interest: with the chain rule, we obtain
+\begin{equation}\label{eq:bp1}
+\frac{\partial J}{\partial b_j^{(l)}}
+= \frac{\partial J}{\partial z_j^{(l)}}\frac{\partial z_j^{(l)}}{\partial b_j^{(l)}}
+= \delta_j^{(l)} \frac{\partial\left (\sum_{i}w_{ij}^{(l)}a_i^{(l-1)} + b_j^{(l)}\right)}{\partial b_j^{(l)}}
+= \delta_j^{(l)},
+\end{equation}
+and similarly,
+\begin{equation}\label{eq:bp2}
+\frac{\partial J}{\partial w_{ij}^{(l)}}
+= \frac{\partial J}{\partial z_j^{(l)}}\frac{\partial z_j^{(l)}}{\partial w_{ij}^{(l)}}
+= \delta_j^{(l)} \frac{\partial z_j^{(l)}}{\partial w_{ij}^{(l)}}
+= \delta_j^{(l)}a_i^{(l-1)}.
+\end{equation}
+We can arrange those derivatives in vectors and matrices matching the bias vectors and weight matrices in dimension. The bias derivative vector is simply given by $\bm{\delta}^{(l)}$ and the matrix of weight derivatives is $\bm{a}^{(l-1)}\bm{\delta}^{(l)\top}$. This enables us to formulate the parameter update of stochastic gradient descent as a single subtraction of the derivative matrix from the corresponding weight matrix.
+
+All that remains is the calculation of $\bm{\delta}^{(l)}$ itself. We start with the output layer $L$:
+\begin{equation}
+\delta_j^{(L)} = \frac{\partial J}{\partial z_j^{(L)}}
+= \frac{\partial J}{\partial \hat{y}_j} \frac{\partial \hat{y}_j}{\partial z_j^{(L)}}
+= \frac{\partial J}{\partial \hat{y}_j} f^{(L)\prime}\left (z_j^{(L)}\right ),
+\end{equation}
+which, in vector notation, becomes
+\begin{equation}
+\bm{\delta}^{(L)} = \nabla_{\hat{\bm{y}}}J \odot f^{(L)\prime}\left (\bm{z}^{(L)}\right ).
+\end{equation}
+Here, $\bm{x} \odot \bm{y}$ denotes the entry-wise product between $\bm{x}$ and $\bm{y}$.
+
+Finally, the output error can be propagated back to earlier layers. Again applying the chain rule,
+\begin{equation}
+\delta_j^{(l)} = \frac{\partial J}{\partial z_j^{(l)}}
+= \sum_k \frac{\partial J}{\partial z_k^{(l+1)}} \frac{\partial z_k^{(l+1)}}{\partial z_j^{(l)}}
+= \sum_k \delta_k^{(l+1)} \frac{\partial z_k^{(l+1)}}{\partial z_j^{(l)}},
+\end{equation}
+where the sum is over all neurons in the \nth{(l+1)} layer. Note that
+\begin{equation}
+\begin{gathered}
+\frac{\partial z_k^{(l+1)}}{\partial z_j^{(l)}}
+= \frac{\partial\left (
+	\sum_j w_{jk}^{(l+1)}f^{(l)}\left (z_j^{(l)}\right )+b_k^{(l+1)}
+	\right )}{\partial z_j^{(l)}}\\
+= w_{jk}^{(l+1)}f^{(l)\prime}\left (z_j^{(l)}\right ).
+\end{gathered}
+\end{equation}
+Substituting back, we obtain
+\begin{equation}
+\delta_j^{(l)} = \sum_k \delta_k^{(l+1)} w_{jk}^{(l+1)}f^{(l)\prime}\left (z_j^{(l)}\right ),
+\end{equation}
+which is easily expressed in matrix notation:
+\begin{equation}\label{eq:bp3}
+\bm{\delta}^{(l)} = \bm{W}^{(l+1)} \bm{\delta}^{(l+1)} \odot f^{(l)\prime}\left (\bm{z}^{(l)}\right ).
+\end{equation}
+
+These expressions allow for a very efficient computation of the gradient. First, we propagate the input vector of a particular training example forward through the network to obtain the output $\hat{\bm{y}}$. From this, we can calculate the cost $J(\bm{\theta})$ and the error $\bm{\delta}^{(L)}$ in the output layer. With Eq. \eqref{eq:bp3}, the error is then propagated backwards through the hidden layers, where we can easily compute the derivatives using Eq. \eqref{eq:bp1} and \eqref{eq:bp2}.
+
+Combining back-propagation with stochastic gradient descent yields the complete learning algorithm for feedforward neural networks, which is formalized in algorithm \ref{alg:learning} \cite[Ch.\,2]{Nielsen2015},\cite[Ch.\,6,\,pp.\,205-206]{DBLP:books/daglib/0040158}.
+
+\begin{algorithm}
+	\caption{The learning algorithm for feedforward neural networks. The algorithm computes one stochastic gradient descent update, given a minibatch $\mathbb{B}$.}
+	\begin{algorithmic}
+		\Require{A minibatch of training examples $\mathbb{B}$}
+		\Require{The model composed of weight matrices $\bm{W}^{(i)}$, bias vectors $\bm{b}^{(i)}$, and activation functions $f^{(i)}$}
+		\Require{The learning rate $\eta$}
+		\For{$(\bm{x}, \bm{y}) \in \mathbb{B}$}
+		\State{$\bm{a}^{(\bm{x},1)} = \bm{x}$}
+		\For{$l = 2,\ldots,L$}\Comment{forward propagation}
+		\State{$\bm{z}^{(\bm{x},l)} = \bm{W}^{(l)\top}\bm{a}^{(\bm{x},l-1)} + \bm{b}^{(l)}$}
+		\State{$\bm{a}^{(\bm{x},l)} = f^{(l)}\left (\bm{z}^{(\bm{x},l)}\right )$}
+		\EndFor
+		\State{$\hat{\bm{y}} = \bm{a}^{(\bm{x}, L)}$}
+		\State{$\bm{\delta}^{(\bm{x},L)} = \nabla_{\hat{\bm{y}}}J \odot f^{(L)\prime}\left (\bm{z}^{(\bm{x},L)}\right )$}
+		\For{$l = L-1, \ldots, 2$} \Comment{back-propagation}
+		\State{$\bm{\delta}^{(\bm{x},l)} = \bm{W}^{(l+1)} \bm{\delta}^{(\bm{x},l+1)} \odot f^{(l)\prime}\left (\bm{z}^{(\bm{x},l)}\right )$}
+		\EndFor
+		\EndFor
+		\For{$l = L, \ldots, 2$}\Comment{gradient descent}
+		\State{$\bm{W}^{(l)} = \bm{W}^{(l)} - \frac{\eta}{|\mathbb{B}|} \sum_{(\bm{x}, \bm{y}) \in \mathbb{B}} \bm{a}^{(\bm{x},l-1)}\bm{\delta}^{(\bm{x},l)\top}$}
+		\State{$\bm{b}^{(l)} = \bm{b}^{(l)} - \frac{\eta}{|\mathbb{B}|} \sum_{(\bm{x}, \bm{y}) \in \mathbb{B}}
+			\bm{\delta}^{(\bm{x}, l)}$}
+		\EndFor
+	\end{algorithmic}
+	\label{alg:learning}
+\end{algorithm}
+
+\begin{comment}
+The back-propagation equations give us some insight into why training sometimes is difficult. For example, if we choose the logistic sigmoid function as activation function for a particular hidden layer, we can see from Eq. \eqref{eq:bp3} that the error is multiplied with $\sigma'\left (\bm{z}^{(l)}\right )$. Since the logistic sigmoid function gets very flat for input of large absolute value, its gradient is close to 0 for such inputs. If the gradient is near 0, the update steps of stochastic gradient descent become very small, and the network thus learns slowly
+ \cite[Ch.\,6,\,p.\,189]{DBLP:books/daglib/0040158}.
+\end{comment}

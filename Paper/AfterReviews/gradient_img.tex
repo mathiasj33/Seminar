@@ -1,0 +1,9 @@
+% !TeX root = dm-template.tex
+
+% restrict y to domain=-1:1, x=1cm
+\begin{tikzpicture}[scale=.9]
+	\begin{axis}
+		\addplot3[surf] [samples=50]
+		{x^2+y^2};
+	\end{axis}
+\end{tikzpicture}

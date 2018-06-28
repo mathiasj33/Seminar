@@ -1,0 +1,9 @@
+\section{Extensions}
+\label{sec:extensions}
+The basic feedforward neural networks we have discussed so far form the foundation for a variety of more sophisticated models, which are more often used in practice. In this section, we briefly examine those extensions of feedforward neural networks.
+
+In computer vision, the most common type of neural networks are \emph{convolutional neural networks} \cite{LeCun1989}. These models have been explicitly designed to exploit the spatial structure of images. For example, they share weights across different neurons, so that they can detect the same feature in different parts of an image. Because of their structure, convolutional neural networks also require far less parameters than traditional feedforward neural networks and are thus much more efficient to train and evaluate.
+
+\emph{Recurrent neural networks} \cite{Rumelhart1986533} are neural networks that can process sequential data such as natural language and speech. In contrast to feedforward networks, they allow feedback connections from a layer into previous layers. Therefore, the output at a particular step $t$ in a sequence $\bm{x}^{(1)}, \ldots, \bm{x}^{(\tau)}$ depends not only on the input $\bm{x}^{(t)}$, but also on all previous inputs $\bm{x}^{(1)}, \ldots, \bm{x}^{(t-1)}$. For example, if a recurrent neural network predicts the meaning of a word in a sentence, it can take into account the previous words in the sentence.
+
+While convolutional and recurrent neural networks are the most common extensions of feedforward neural networks, many other specialized networks exist. Neural networks have been adapted to almost every task in machine learning and continue to produce excellent results \cite[Ch.\,5,\,pp.\,96-100]{DBLP:books/daglib/0040158}.
